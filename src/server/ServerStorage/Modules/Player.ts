@@ -12,6 +12,10 @@ const PlayerStore = ProfileStore.New(DATA_NAME, DATA_TEMPLATE);
 const Profiles = new Map<Player, Profile<typeof DATA_TEMPLATE>>();
 
 
+function lookChangeValues(player: Player) {}
+
+function profileLoad(player: Player) {}
+
 function playerDataSetup(player: Player) {
     const key = `Player_ ${player.UserId}`;
     const profile = PlayerStore.StartSessionAsync(key, {

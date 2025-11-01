@@ -12,18 +12,19 @@ GAME:
 TODO:
     [X] data handler (ProfileStore);
     [X] base init progect (folders, base utils);
-        - Types;
-        - Assets, Events;
-        - Util initialize;
-    
-    - User input
-        - 
 
-    - Staff
-        -
 
-    - Money-take
-        - Max Coins: 10;
-        - array of spawns;
+    - staff Class // i can use this in da client, then use events???
+        - Attack: () => {};
+        - Cooldown: () => {};
+        - Input?
+            - Activated;
+            - when equiped create ui?;
+
+    - Base staff (server)
+        - Attack;
+            - Logic for attack;
+        - Remote.OnServerEvent
+            - Abilitys (z, x, c, v) ???
 
 */
