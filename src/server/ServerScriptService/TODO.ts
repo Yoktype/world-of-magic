@@ -1,7 +1,7 @@
 /*
 world-of-magic
 GAME:
-    - Staff w. Abilitys (diff. staffs);
+    - Staff w. Abilitys (diff. staffs); (z, x, c, v)?
     - Armore (give: Health, Walkspeed);
     - Inventory;
     - Store (buy Staffs and Armores);
@@ -10,11 +10,20 @@ GAME:
     - Data save;
 
 TODO:
-    - data handler (ProfileStore);
-    - base init progect (folders, base utils);
+    [X] data handler (ProfileStore);
+    [X] base init progect (folders, base utils);
         - Types;
         - Assets, Events;
         - Util initialize;
+    
+    - User input
         - 
+
+    - Staff
+        -
+
+    - Money-take
+        - Max Coins: 10;
+        - array of spawns;
 
 */
