@@ -1,4 +1,4 @@
-import { Players, ReplicatedStorage } from "@rbxts/services";
+import { ReplicatedStorage } from "@rbxts/services";
 
 const Events = ReplicatedStorage.WaitForChild("Events");
 const StaffEvents = Events.WaitForChild("StaffEvents")
@@ -8,17 +8,20 @@ const staffUnequippedEvent = StaffEvents.FindFirstChild("StaffUnequippedEvent") 
 const staffActivatedEvent = StaffEvents.FindFirstChild("StaffActivatedEvent") as RemoteEvent;
 
 
-function playAnimation() {
+function removeUI() {}
 
-}
+function createUI() {}
 
-function setupStaff(staff: Tool) {
-    if (staff === undefined) return;
-
-    staff.Equipped.Connect(() => { staffEquippedEvent.FireServer(); });
-    staff.Unequipped.Connect(() => { staffUnequippedEvent.FireServer(); });
-    staff.Activated.Connect(() => { staffActivatedEvent.FireServer(); });
-}
+function attack() {}
 
 
-newStaffEvent.OnClientEvent.Connect(setupStaff);
+
+staffEquippedEvent.OnServerEvent.Connect((player: Player, arg) => { createUI(); })
+staffUnequippedEvent.OnServerEvent.Connect((player: Player, arg) => { removeUI(); })
+staffActivatedEvent.OnServerEvent.Connect((player: Player, arg) => {
+    if (arg === undefined) return;
+
+    const staff = arg as Tool;
+
+    attack();
+})
