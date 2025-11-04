@@ -1,7 +1,7 @@
 import ProfileStore, { Profile } from "@rbxts/profile-store"
 import { Players } from "@rbxts/services";
 
-const DATA_NAME = "test";
+const DATA_NAME = "unknown";
 
 const DATA_TEMPLATE = {
     Cash: 0,
@@ -14,9 +14,9 @@ const Profiles = new Map<Player, Profile<typeof DATA_TEMPLATE>>();
 
 function lookChangeValues(player: Player) {}
 
-function profileLoad(player: Player) {}
+function dataLoad(player: Player) {}
 
-function playerDataSetup(player: Player) {
+function playerDataLoad(player: Player) {
     const key = `Player_ ${player.UserId}`;
     const profile = PlayerStore.StartSessionAsync(key, {
         Cancel() {
@@ -47,7 +47,7 @@ function playerDataSetup(player: Player) {
 
 
 Players.PlayerAdded.Connect((player) => {
-    playerDataSetup(player);
+    playerDataLoad(player);
 })
 
 Players.PlayerRemoving.Connect(player => {

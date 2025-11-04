@@ -13,24 +13,30 @@ TODO:
     [X] data handler (ProfileStore);
     [X] base init progect (folders, base utils);
 
+                {Staff
+                    - BaseStaff
+                        - when i can bind client ?
+                        - BaseStaff OOP ??? 
+                            - class Staff
+                                - AbilityCast
+                                - Attack
+                                - binds
+                            - class Bind Staff (client-side) 
+                                - bind Activated, Equiped, Unequiped
+                        - Staff server-side
+                            - take remote 
+                                - Attack
+                                - Ability || where i can take Ability logic oop)
+                                    - maybe server take remote when player press "Z or X"
+                                        - then server take Attribute from instance "StaffType"
+                                        - ANNNNNDD   ???
 
-    - Staff
-        - Client side;
-            - StaffController
-                - getEvent when player got tool?
-                    - setup input;
-                        - Equip;
-                        - Unequip;
-                        - Activated;
-                - Attack use animated
-                - where i can handle cooldown
-        - Server side;
-            - Staff Handler
-                - get staffType
-                    - use Class from type
-        - Staff class
-            - 1 Class have
-                - instance Tool
-                - Attack
-                - Cooldown
+
+                        - Attacking
+                            - client bind
+                                    - remote Event
+                        - 2(z, x) abilitys ???
+                            - client bind
+                                - remote event
+                }
 */
