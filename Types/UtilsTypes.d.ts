@@ -1,0 +1,2 @@
+type VoidFunction = () => void;
+
