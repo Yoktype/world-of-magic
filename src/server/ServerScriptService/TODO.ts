@@ -20,5 +20,8 @@ TODO:
                 - equip
             - take remote for create new?
         - server-side
+            - in config i can keep funciton attack where i take Player :P
+
+        
 
 */

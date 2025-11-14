@@ -8,6 +8,12 @@ const newWeaponEvent = Events.FindFirstChild("NewWeapon") as RemoteEvent;
 // private functions
 function bindSignal(weapon: Tool) {
     if ( weapon === undefined ) return;
+
+    weapon.Equipped.Connect(() => {});
+
+    weapon.Unequipped.Connect(() => {});
+
+    weapon.Activated.Connect(() => {});
 }
 
 function newWepon(weapon: Tool) {

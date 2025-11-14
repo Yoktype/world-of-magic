@@ -5,4 +5,5 @@ interface Weapon {
 
     model: Tool | BasePart,
     
+    attack: (player: Player) => void
 }

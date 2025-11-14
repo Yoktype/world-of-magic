@@ -14,7 +14,11 @@ export default {
     model: baseWeapon,
 
     // как у дерпа логика типа в конфиге функция этого 
-    attack: (player: Player) => {
+    attack: (player: Player): void => {
         // do logic attack for base 
+
+        
+        
+        return;
     }
 }
