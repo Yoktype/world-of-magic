@@ -14,7 +14,11 @@ TODO:
     [X] base init progect (folders, base utils);
 
     - Staff
-        - Every player have a bind on all staffs, yeah
-            - then, chance on da memory leak
+        - client-side
+            - remotes fire server
+                - activated
+                - equip
+            - take remote for create new?
+        - server-side
 
 */
