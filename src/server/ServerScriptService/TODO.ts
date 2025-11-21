@@ -10,30 +10,51 @@ GAME:
     - Data save;
 
 TODO:
-    - Weapon :
-            - cleint-side :
-                - remote events
-                    - attack, 
-                - remote functions
-                    - return animation id?
+    [X] Game config
 
-            - server-side :
-                - attack handle
+    - Weapon : 
+        - cleint-side :
+            - remote events
+                - attack, 
+            - remote functions
+                - return animation id?
 
-            - do :
-                - game config
-                - client controller for remote events
-                - server handler
-                - base weapon config
-                - base weapon attack logic
-                - base weapon ability logic z,x
+        - server-side :
+            - attack
+                - cooldown
+                - hit
+                - isStanned
+                - if attack then Effects
 
-    - Data ProfileStore :
+        - do :
+            - client controller for remote events, gets new weapons
+            - server handler
+            - base weapon config
+            - base weapon attack logic
+            - base weapon ability logic z,x
+    
     - Kill rewards : 
     - Game-store : 
     - Armore : 
     - Inventory : 
     - Robux-store : 
     - Level-system :
+    - Data ProfileStore :
+
+Create :
+    - ReplicatedStorage
+        - Events
+            - 
+
+    - ServerStorage
+        - Events
+            - 
+
+ROJO :
+    - ignore
+        init.meta.json
+            {
+                "ignoreUnknownInstances": true
+            }
 
 */
