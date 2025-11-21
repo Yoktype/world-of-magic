@@ -1,7 +1,7 @@
 /*
 world-of-magic
 GAME:
-    - Staff w. Abilitys (diff. staffs); (z, x, c, v)?
+    - Staff w. Abilitys (diff. staffs); (z, x)?
     - Armore (give: Health, Walkspeed);
     - Inventory;
     - Store (buy Staffs and Armores);
@@ -10,18 +10,30 @@ GAME:
     - Data save;
 
 TODO:
-    [X] data handler (ProfileStore);
-    [X] base init progect (folders, base utils);
+    - Weapon :
+            - cleint-side :
+                - remote events
+                    - attack, 
+                - remote functions
+                    - return animation id?
 
-    - Staff
-        - client-side
-            - remotes fire server
-                - activated
-                - equip
-            - take remote for create new?
-        - server-side
-            - in config i can keep funciton attack where i take Player :P
+            - server-side :
+                - attack handle
 
-        
+            - do :
+                - game config
+                - client controller for remote events
+                - server handler
+                - base weapon config
+                - base weapon attack logic
+                - base weapon ability logic z,x
+
+    - Data ProfileStore :
+    - Kill rewards : 
+    - Game-store : 
+    - Armore : 
+    - Inventory : 
+    - Robux-store : 
+    - Level-system :
 
 */
