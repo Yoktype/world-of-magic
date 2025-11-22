@@ -13,25 +13,9 @@ TODO:
     [X] Game config
 
     - Weapon : 
-        - cleint-side :
-            - remote events
-                - attack, 
-            - remote functions
-                - return animation id?
-
-        - server-side :
-            - attack
-                - cooldown
-                - hit
-                - isStanned
-                - if attack then Effects
-
-        - do :
-            - client controller for remote events, gets new weapons
-            - server handler
-            - base weapon config
-            - base weapon attack logic
-            - base weapon ability logic z,x
+            - BaseWeapon attack logic
+    /// Where i can keep hit and effect??? (kill system)
+            
     
     - Kill rewards : 
     - Game-store : 
@@ -44,11 +28,13 @@ TODO:
 Create :
     - ReplicatedStorage
         - Events
-            - 
+            - WeaponEvents / Folder
+                - NewWeapon / RemoteEvent
+                - Attack / RemoteEvent
 
-    - ServerStorage
-        - Events
-            - 
+        - Assets / folder
+            - Weapons / folder
+                - BaseWeapon / tool
 
 ROJO :
     - ignore

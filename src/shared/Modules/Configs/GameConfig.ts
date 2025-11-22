@@ -1,30 +1,44 @@
-import { RunService } from "@rbxts/services"
+import { RunService } from "@rbxts/services";
 
 
-let server!: object;
-let client!: object;
+let server;
+let client;
 
 const isServer: boolean = RunService.IsServer();
 const isClient: boolean = RunService.IsClient();
 
+// server
 if ( isServer === true ) {
     const object = {
 
+        
+        
     };
 
     server = object;
-} else { server = {}; }
+}
 
+// client
 if ( isClient === true ) {
     const object = {
+
+    
 
     };
 
     client = object;
-} else { client = {}; }
+}
 
+// setup
 export default {
     server,
     client,
 
+    isServer,
+    isClient,
+
+    // weapon
+    BASE_WEAPON: "BaseWeapon",
+    WEAPON_STATE: "WEAPON_STATE",
+    COOLDOWN: "COOLDOWN",
 }
