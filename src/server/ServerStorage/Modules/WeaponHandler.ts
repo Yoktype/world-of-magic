@@ -81,7 +81,8 @@ function attack(player: Player, tool: Tool | BasePart): void {
     const cooldown = isCooldown(tool);
     if ( cooldown === true ) return;
 
-    weaponConfig.attack(player);
+    const [attacker, victim] = weaponConfig.attack(player);
+    hit(attacker, victim);
 }
 
 // setup

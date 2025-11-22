@@ -17,9 +17,9 @@ export default {
     cooldown: 2,
     damage: 10,
 
-    attack: (player: Player): void => {
+    attack: (player: Player): [Player, Player] => {
 
 
-
+        return [player, player]
     },
 }

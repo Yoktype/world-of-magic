@@ -2,5 +2,5 @@ interface Weapon {
     model: Tool,
     cooldown: number,
     damage: number,
-    attack: (player: Player) => void,
+    attack: (player: Player) => [Player, Player],
 }
