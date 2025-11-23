@@ -39,6 +39,7 @@ export default {
 
     // weapon
     BASE_WEAPON: "BaseWeapon",
+    BASE_BULLET: "BaseBullet",
     WEAPON_STATE: "WEAPON_STATE",
     COOLDOWN: "COOLDOWN",
 }

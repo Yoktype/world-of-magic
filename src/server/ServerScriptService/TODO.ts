@@ -14,7 +14,15 @@ TODO:
 
     - Weapon : 
             - BaseWeapon attack logic
-    /// Where i can keep hit and effect??? (kill system)
+                - hit detect :
+                    - Touched ?
+                    - GetBoundsInBox ?
+                - Movement :
+                    - RunService.Stepped ?
+                    - BodyVelocity ?
+                    - attachment :
+                        - LinearVelocity ?
+                
             
     
     - Kill rewards : 

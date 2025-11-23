@@ -14,8 +14,8 @@ const newWeaponEvent = WeaponEvents.FindFirstChild("NewWeapon") as RemoteEvent;
 const attackEvent = WeaponEvents.FindFirstChild("Attack") as RemoteEvent;
 
 // init configs
-const WeaponsConfigs = new Map<string, Weapon>()
-WeaponsConfigs.set(GameConfig.BASE_WEAPON, BaseWeaponConfig)
+const WeaponsConfigs = new Map<string, Weapon>();
+WeaponsConfigs.set(GameConfig.BASE_WEAPON, BaseWeaponConfig);
 
 // private functions
 function newWeaponForPlayer(player: Player, WeaponName: string): void {
@@ -43,15 +43,32 @@ function getWeaponState(tool: Tool | BasePart): string {
     return tool.GetAttribute(GameConfig.WEAPON_STATE) as string ?? GameConfig.BASE_WEAPON as string;
 }
 
-function killFeed() {}
+function killFeed(attacker: Player, victim: Player): void {
+    print(`${attacker}, killed ${victim}`);
+}
 /* TODO
-    типа справа иконки появляются кто кого если килл
+    killfeed UI
 */
 
-function hit(attacker: Player, victim: Player) {}
+function reward(player: Player): void {
+    print(`${player}, got cash and exp`);
+}
 /*
-    attack function returns attacker and victim, here validate hit
+    ProfileStore reward take and save, upd UI
 */
+
+function hit(victim: Player, config: Weapon): boolean {
+    const damage = config.damage;
+    const character = victim.Character || victim.CharacterAdded.Wait()[1];
+    const humanoid = character.FindFirstChild("Humanoid") as Humanoid;
+
+    const health = math.max(0, humanoid.Health - damage);
+    humanoid.Health = health;
+
+    if ( health <= 0 ) return true;
+
+    return false;
+}
 
 function isCooldown(tool: Tool | BasePart): boolean {
     if (GameConfig.server === undefined) throw""; // yandere code
@@ -82,7 +99,13 @@ function attack(player: Player, tool: Tool | BasePart): void {
     if ( cooldown === true ) return;
 
     const [attacker, victim] = weaponConfig.attack(player);
-    hit(attacker, victim);
+    if ( victim === undefined ) return;
+
+    const isKill = hit(victim, weaponConfig);
+    if ( isKill === true ) {
+        reward(attacker);
+        killFeed(attacker, victim);
+    }
 }
 
 // setup
