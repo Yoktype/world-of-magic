@@ -22,12 +22,17 @@ export default {
 
         let victim!: Player
 
-        const bullet = baseBullet.Clone();
-
-        RunService.Stepped.Connect((dt: number): void => {
-
-        })
+        
 
         return [player, victim]
     },
 }
+/*
+    const distance = (character - endPos).Magnitude 
+    const travelTime = distance / fireballConfig.Speed
+
+    const increments = travelTime / RunService.Heartbeat.Wait()
+    for i = 1, increments do 
+        const part = p1.Lerp(endPos, i/increments)
+    end
+*/

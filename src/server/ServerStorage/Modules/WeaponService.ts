@@ -1,4 +1,4 @@
-import { ReplicatedStorage } from "@rbxts/services";
+import { ReplicatedStorage, Players } from "@rbxts/services";
 import GameConfig from "shared/Modules/Configs/GameConfig";
 import BaseWeaponConfig from "shared/Modules/Configs/Weapons/BaseWeaponConfig";
 

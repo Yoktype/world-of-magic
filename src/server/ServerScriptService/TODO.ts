@@ -11,20 +11,11 @@ GAME:
 
 TODO:
     [X] Game config
+    [X] Mouse moudle
 
     - Weapon : 
             - BaseWeapon attack logic
-                - hit detect :
-                    - Touched ?
-                    - GetBoundsInBox ?
-                - Movement :
-                    - RunService.Stepped ?
-                    - BodyVelocity ?
-                    - attachment :
-                        - LinearVelocity ?
-                
-            
-    
+        
     - Kill rewards : 
     - Game-store : 
     - Armore : 
@@ -39,6 +30,10 @@ Create :
             - WeaponEvents / Folder
                 - NewWeapon / RemoteEvent
                 - Attack / RemoteEvent
+            - MouseEvents / Folder
+                - GetMousePositionOnScreenEvent / RemoteFunction
+                - GetMouseHitInWolrdEvent / RemoteFunction
+                - GetMousePositionInWorldEvent / RemoteFunction
 
         - Assets / folder
             - Weapons / folder
