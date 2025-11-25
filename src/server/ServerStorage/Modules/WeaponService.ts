@@ -5,14 +5,6 @@ import BaseWeaponConfig from "shared/Modules/Configs/Weapons/BaseWeaponConfig";
 // only server scope
 if (GameConfig.server === undefined) throw"";
 
-// constants
-const Events = ReplicatedStorage.WaitForChild("Events") as  Folder;
-const WeaponEvents = Events.FindFirstChild("WeaponEvents") as Folder;
-
-// events
-const newWeaponEvent = WeaponEvents.FindFirstChild("NewWeapon") as RemoteEvent;
-const attackEvent = WeaponEvents.FindFirstChild("Attack") as RemoteEvent;
-
 // init configs
 const WeaponsConfigs = new Map<string, Weapon>();
 WeaponsConfigs.set(GameConfig.BASE_WEAPON, BaseWeaponConfig);
@@ -30,7 +22,7 @@ function newWeaponForPlayer(player: Player, WeaponName: string): void {
 
     // TODO: keep tool in folder/inventory
     weapon.Parent = player.FindFirstChild("Backpack");
-    newWeaponEvent.FireClient(player, weapon);
+    GameConfig.newWeaponEvent.FireClient(player, weapon);
 }
 /* debug
     Players.PlayerAdded.Connect(player => {
@@ -109,7 +101,7 @@ function attack(player: Player, tool: Tool | BasePart): void {
 }
 
 // setup
-attackEvent.OnServerEvent.Connect((player: Player, args) => {
+GameConfig.attackEvent.OnServerEvent.Connect((player: Player, args) => {
     if ( player === undefined || args === undefined ) return;
 
     const tool = args as Tool;

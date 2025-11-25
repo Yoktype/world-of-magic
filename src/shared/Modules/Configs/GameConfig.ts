@@ -3,6 +3,7 @@ import { RunService, ReplicatedStorage } from "@rbxts/services";
 // constants
 const Events = ReplicatedStorage.WaitForChild("Events") as Folder;
 const MouseEvents = Events.FindFirstChild("MouseEvents") as Folder;
+const WeaponEvents = Events.FindFirstChild("WeaponEvents") as Folder;
 
 // variables
 let server;
@@ -50,6 +51,9 @@ export default {
     COOLDOWN: "COOLDOWN",
 
     // remote events
+    // weapon
+    newWeaponEvent: WeaponEvents.FindFirstChild("NewWeapon") as RemoteEvent,
+    attackEvent: WeaponEvents.FindFirstChild("Attack") as RemoteEvent,
 
     // remote functions
     // mouse
