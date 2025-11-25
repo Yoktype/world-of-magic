@@ -1,16 +1,7 @@
-import { UserInputService, Players, ReplicatedStorage, Workspace } from "@rbxts/services";
+import { UserInputService, Workspace } from "@rbxts/services";
 
 // constants
-const LOCAL_PLAYER = Players.LocalPlayer as Player;
 const Camera = Workspace.WaitForChild("CurrentCamera") as Camera;
-
-const Events = ReplicatedStorage.WaitForChild("Events") as Folder;
-const MouseEvents = Events.FindFirstChild("MouseEvents") as Folder;
-
-// events
-const getMousePositionOnScreenEvent = MouseEvents.FindFirstChild("GetMousePositionOnScreenEvent") as RemoteFunction;
-const getMouseHitInWolrdEvent = MouseEvents.FindFirstChild("GetMouseHitInWolrdEvent") as RemoteFunction;
-const getMousePositionInWorldEvent = MouseEvents.FindFirstChild("GetMousePositionInWorldEvent") as RemoteFunction;
 
 // private functions
 export function getMousePositionOnScreen(): Vector2 {
@@ -48,17 +39,4 @@ export function getMouseHitInWolrd(): BasePart | undefined {
     const [ instance, position ] = getMouseInWorld();
     if ( instance === undefined || position === undefined ) return undefined;
     return instance;
-}
-
-// setup
-getMousePositionOnScreenEvent.OnClientInvoke = () => {
-    return getMousePositionOnScreen();
-}
-
-getMouseHitInWolrdEvent.OnClientInvoke = () => {
-    return getMouseHitInWolrd();
-}
-
-getMousePositionInWorldEvent.OnClientInvoke = () => {
-    return getMousePositionInWorld();
 }

@@ -1,6 +1,10 @@
-import { RunService } from "@rbxts/services";
+import { RunService, ReplicatedStorage } from "@rbxts/services";
 
+// constants
+const Events = ReplicatedStorage.WaitForChild("Events") as Folder;
+const MouseEvents = Events.FindFirstChild("MouseEvents") as Folder;
 
+// variables
 let server;
 let client;
 
@@ -11,7 +15,9 @@ const isClient: boolean = RunService.IsClient();
 if ( isServer === true ) {
     const object = {
 
-        
+        // bindable events (in ServerStorage)
+
+        // bindable function (in ServerStorage)
         
     };
 
@@ -42,4 +48,13 @@ export default {
     BASE_BULLET: "BaseBullet",
     WEAPON_STATE: "WEAPON_STATE",
     COOLDOWN: "COOLDOWN",
+
+    // remote events
+
+    // remote functions
+    // mouse
+    getMousePositionOnScreenEvent: MouseEvents.FindFirstChild("GetMousePositionOnScreenEvent") as RemoteFunction,
+    getMouseHitInWolrdEvent: MouseEvents.FindFirstChild("GetMouseHitInWolrdEvent") as RemoteFunction,
+    getMousePositionInWorldEvent: MouseEvents.FindFirstChild("GetMousePositionInWorldEvent") as RemoteFunction,
+    
 }

@@ -11,7 +11,14 @@ GAME:
 
 TODO:
     [X] Game config
-    [X] Mouse moudle
+    [X] Mouse module
+
+    - network // KEEP REMOTES in GameConfig
+        - client
+            - take from GameConfig remote event
+            - change all
+        - server
+            - in GameConfig
 
     - Weapon : 
             - BaseWeapon attack logic
