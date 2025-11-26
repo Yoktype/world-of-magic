@@ -12,24 +12,17 @@ GAME:
 TODO:
     [X] Game config
     [X] Mouse module
-
-    - network // KEEP REMOTES in GameConfig
-        - client
-            - take from GameConfig remote event
-            - change all
-        - server
-            - in GameConfig
-
-    - Weapon : 
-            - BaseWeapon attack logic
+    [X] Networking
+    [X] Weapon: BaseWeapon, attack, signals
+        - Weapon has inf range attack
         
-    - Kill rewards : 
     - Game-store : 
     - Armore : 
     - Inventory : 
     - Robux-store : 
     - Level-system :
     - Data ProfileStore :
+    - Kill rewards : 
 
 Create :
     - ReplicatedStorage

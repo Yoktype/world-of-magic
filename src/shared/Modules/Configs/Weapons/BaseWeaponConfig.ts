@@ -4,6 +4,8 @@ import GameConfig from "../GameConfig";
 // constants
 const Assets = ReplicatedStorage.WaitForChild("Assets") as Folder;
 const Weapons = Assets.FindFirstChild("Weapons") as Folder;
+const ObjectPoolBullets = Weapons.FindFirstChild("ObjectPoolBullets") as Folder;
+
 const baseWeapon = Weapons.FindFirstChild(GameConfig.BASE_WEAPON) as Tool;
 const baseBullet = Weapons.FindFirstChild(GameConfig.BASE_BULLET) as BasePart;
 
@@ -19,11 +21,17 @@ function Attack(player: Player): [ Player, Player ] | [ Player, undefined ] {
     if ( RunService.IsClient() === true ) return [ player, undefined ];
 
     let victim!: Player;
+    let fireball!: BasePart;
 
-    const fireball = baseBullet.Clone();
-    fireball.Anchored = true;
-    fireball.CanCollide = false;
-    fireball.Parent = Workspace;
+    if ( ObjectPoolBullets.FindFirstChild(baseBullet.Name) !== undefined ) {
+        fireball = ObjectPoolBullets.FindFirstChild(baseBullet.Name) as BasePart;
+        fireball.Parent = Workspace;
+    } else {
+        fireball = baseBullet.Clone();
+        fireball.Anchored = true;
+        fireball.CanCollide = false;
+        fireball.Parent = Workspace;
+    }
 
     const mouseHitPosition = GameConfig.getMouseHitInWolrdEvent.InvokeClient(player) as Vector3 | undefined;
     if ( mouseHitPosition === undefined ) return [ player, undefined ];
@@ -39,9 +47,11 @@ function Attack(player: Player): [ Player, Player ] | [ Player, undefined ] {
     const travelTime = distance / fireballSpeed;
     const smoothPath = travelTime / task.wait();
 
-    // if touche then .Parent = undefined 
+    const playerCharacter = player.Character ?? player.CharacterAdded.Wait()[1];
     let connection = fireball.Touched.Connect(otherPart => {
-        fireball.Destroy();
+        if ( otherPart.IsDescendantOf(playerCharacter) === true ) return;
+
+        fireball.Parent = ObjectPoolBullets;
 
         const otherPlayer  = Players.GetPlayerFromCharacter(otherPart.Parent);
         if ( otherPlayer === undefined ) return;
@@ -70,13 +80,3 @@ export default {
 
     attack: (player: Player): [ Player, Player ] | [ Player, undefined ] => { return Attack(player); },
 }
-/*
-    const distance = (character - endPos).Magnitude 
-    const travelTime = distance / fireballConfig.Speed
-
-    const increments = travelTime / RunService.Heartbeat.Wait()
-    for i = 1, increments do 
-        const part = p1.Lerp(endPos, i/increments)
-    end
-*/
-
