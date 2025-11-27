@@ -8,7 +8,7 @@ const LOCAL_PLAYER = Players.LocalPlayer as Player;
 const network = require(LOCAL_PLAYER.FindFirstChild("network") as ModuleScript);
 
 // folders
-const Controllers = LOCAL_PLAYER.FindFirstChild("Controllers") as Folder;
+const Modules = LOCAL_PLAYER.FindFirstChild("Modules") as Folder;
 
 // setup
-init(Controllers);
+init(Modules);

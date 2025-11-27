@@ -13,6 +13,8 @@ WeaponsConfigs.set(GameConfig.BASE_WEAPON, BaseWeaponConfig);
 function newWeaponForPlayer(player: Player, WeaponName: string): void {
     if (GameConfig.server === undefined) throw""; // yandere code
 
+    // activated this function from ProfileStore only by bindable
+
     let config = WeaponsConfigs.get(WeaponName);
     if ( config === undefined ) config = WeaponsConfigs.get(GameConfig.BASE_WEAPON) as Weapon;
 

@@ -15,14 +15,40 @@ TODO:
     [X] Networking
     [X] Weapon: BaseWeapon, attack, signals
         - Weapon has inf range attack
+    !!! MAYBE change weapon config -> class {
+        config - constant settings
+        class - keep state, methods, logic
+        default - game logic
+    }
+
+    Data: 
+        - {
+            leaderstat / Cash
+            
+        }
+
+    - Data ProfileStore : OOP?
+        - profile tamplate
+        - updater function
+            - network use
         
-    - Game-store : 
-    - Armore : 
+    - Kill rewards : 
+        - money
+        - level?
+
+
+    - Game-store : how i will buy items? without moneys
+        - client :
+            - UI
+                - react?
+        - server :
+            - take event in ProfileStore and save there that and remote another remote for given;
+
+
     - Inventory : 
+    - Armore : 
     - Robux-store : 
     - Level-system :
-    - Data ProfileStore :
-    - Kill rewards : 
 
 Create :
     - ReplicatedStorage

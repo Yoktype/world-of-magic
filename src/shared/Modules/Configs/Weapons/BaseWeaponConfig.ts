@@ -12,9 +12,14 @@ const baseBullet = Weapons.FindFirstChild(GameConfig.BASE_BULLET) as BasePart;
 const fireballSpeed = 20
 
 // private funcitons
-function spawnHitBox(pos: Vector3) {
+function spawnHitBox(pos: Vector3): boolean {
+    if ( RunService.IsClient() === true ) return false;
+    /*
+        TODO
+        Spawn the part and use method GetDbounds if i get player then return true 
+    */
 
-    return
+    return false;
 }
 
 function Attack(player: Player): [ Player, Player ] | [ Player, undefined ] {
@@ -23,8 +28,9 @@ function Attack(player: Player): [ Player, Player ] | [ Player, undefined ] {
     let victim!: Player;
     let fireball!: BasePart;
 
-    if ( ObjectPoolBullets.FindFirstChild(baseBullet.Name) !== undefined ) {
-        fireball = ObjectPoolBullets.FindFirstChild(baseBullet.Name) as BasePart;
+    const isObjectPoolBulets = ObjectPoolBullets.FindFirstChild(baseBullet.Name) as BasePart | undefined;
+    if ( isObjectPoolBulets !== undefined ) {
+        fireball = isObjectPoolBulets;
         fireball.Parent = Workspace;
     } else {
         fireball = baseBullet.Clone();
@@ -39,7 +45,9 @@ function Attack(player: Player): [ Player, Player ] | [ Player, undefined ] {
     const character = player.Character ?? player.CharacterAdded.Wait()[1];
     const humanoidRootPart = character.FindFirstChild("HumanoidRootPart") as BasePart;
 
-    const startPosition = humanoidRootPart.CFrame.Position.mul(new Vector3(1, 2, 0));
+    const startPosition = humanoidRootPart.CFrame.Position.mul( 
+        humanoidRootPart.CFrame.LookVector.mul( new Vector3(1, 2, 0) ) 
+    );
     fireball.Position = startPosition;
     const fireballPosition = fireball.Position as Vector3;
 
@@ -65,6 +73,7 @@ function Attack(player: Player): [ Player, Player ] | [ Player, undefined ] {
         const fireballMove = fireballPosition.Lerp(mouseHitPosition, i/smoothPath);
         // inf range?
         fireball.Position = fireballMove;
+        // brother just use GetPivot, PivotTo, CFrame.lookAlong ( create cframe w. pos, oren)
     }
     
     connection.Disconnect();

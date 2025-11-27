@@ -1,13 +1,5 @@
-import { ReplicatedStorage } from "@rbxts/services";
+import GameConfig from "shared/Modules/Configs/GameConfig";
 import BaseWeaponConfig from "shared/Modules/Configs/Weapons/BaseWeaponConfig";
-
-// constants
-const Events = ReplicatedStorage.WaitForChild("Events") as  Folder;
-const WeaponEvents = Events.FindFirstChild("WeaponEvents") as Folder;
-
-// events
-const newWeaponEvent = WeaponEvents.FindFirstChild("NewWeapon") as RemoteEvent;
-const attackEvent = WeaponEvents.FindFirstChild("Attack") as RemoteEvent;
 
 // private functions
 function unequipAnimationPlay(): void {
@@ -25,13 +17,15 @@ function newWeapon(tool: Tool) {
 
     tool.Equipped.Connect(() => { equipAnimationPlay(); });
     tool.Unequipped.Connect(() => { unequipAnimationPlay(); });
-    tool.Activated.Connect(() => { attackEvent.FireServer(); });
+    tool.Activated.Connect(() => { GameConfig.attackEvent.FireServer(); });
 }
 
 // setup
-newWeaponEvent.OnClientEvent.Connect((args) => {
+GameConfig.newWeaponEvent.OnClientEvent.Connect((args) => {
     if ( args === undefined ) return;
 
     const tool = args as Tool;
+    if ( tool.IsA("Tool") === false ) return; // only tool
+
     newWeapon(tool);
 });

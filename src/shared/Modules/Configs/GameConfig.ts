@@ -44,6 +44,17 @@ export default {
     isServer,
     isClient,
 
+    // data service
+    DATA_NAME: "unknown",
+    PROFILE_TEMPLATE: {
+
+        Cash: 100,
+
+
+        
+        EndSession: () => {},
+    },
+
     // weapon
     BASE_WEAPON: "BaseWeapon",
     BASE_BULLET: "BaseBullet",
