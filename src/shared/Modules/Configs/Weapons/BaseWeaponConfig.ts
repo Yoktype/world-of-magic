@@ -2,12 +2,8 @@ import { RunService, ReplicatedStorage, Players, Workspace } from "@rbxts/servic
 import GameConfig from "../GameConfig";
 
 // constants
-const Assets = ReplicatedStorage.WaitForChild("Assets") as Folder;
-const Weapons = Assets.FindFirstChild("Weapons") as Folder;
-const ObjectPoolBullets = Weapons.FindFirstChild("ObjectPoolBullets") as Folder;
-
-const baseWeapon = Weapons.FindFirstChild(GameConfig.BASE_WEAPON) as Tool;
-const baseBullet = Weapons.FindFirstChild(GameConfig.BASE_BULLET) as BasePart;
+const baseWeapon = GameConfig.Weapons.FindFirstChild(GameConfig.BASE_WEAPON) as Tool;
+const baseBullet = GameConfig.Weapons.FindFirstChild(GameConfig.BASE_BULLET) as BasePart;
 
 const fireballSpeed = 20
 
@@ -28,7 +24,7 @@ function Attack(player: Player): [ Player, Player ] | [ Player, undefined ] {
     let victim!: Player;
     let fireball!: BasePart;
 
-    const isObjectPoolBulets = ObjectPoolBullets.FindFirstChild(baseBullet.Name) as BasePart | undefined;
+    const isObjectPoolBulets = GameConfig.ObjectPoolBullets.FindFirstChild(baseBullet.Name) as BasePart | undefined;
     if ( isObjectPoolBulets !== undefined ) {
         fireball = isObjectPoolBulets;
         fireball.Parent = Workspace;
@@ -59,7 +55,7 @@ function Attack(player: Player): [ Player, Player ] | [ Player, undefined ] {
     let connection = fireball.Touched.Connect(otherPart => {
         if ( otherPart.IsDescendantOf(playerCharacter) === true ) return;
 
-        fireball.Parent = ObjectPoolBullets;
+        fireball.Parent = GameConfig.ObjectPoolBullets;
 
         const otherPlayer  = Players.GetPlayerFromCharacter(otherPart.Parent);
         if ( otherPlayer === undefined ) return;

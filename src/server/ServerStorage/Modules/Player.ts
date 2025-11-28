@@ -8,8 +8,8 @@ const Profiles = new Map<number, ProfileStore.Profile<typeof GameConfig.PROFILE_
 
 // private functions
 // 4
-function dataUpdater(player: Player): void {
-    if ( RunService.IsStudio() === true ) return; // not save date in studio
+function dataUdapter(player: Player): void {
+    if ( RunService.IsStudio() === true ) return;
 
     const profile = Profiles.get(player.UserId);
     if ( profile === undefined ) {
@@ -19,7 +19,17 @@ function dataUpdater(player: Player): void {
     
     const data = profile.Data;
 
-    // idk how release that
+    // leaderstats
+    const leaderstats = player.FindFirstChild("leaderstats") as Folder;
+    const cash = leaderstats.FindFirstChild("Cash") as NumberValue;
+
+    /*
+        first step, change value in profile, second step reward
+        take Remote? and use cash.Value = profile.Data.Cash;
+    */ 
+    cash.Changed.Connect(() => {
+        profile.Data.Cash = cash.Value;
+    }); 
 
 }
 
@@ -36,42 +46,28 @@ function loadDataForPlayer(player: Player): void {
     const leaderboard = player.FindFirstChild("leaderboard") as Folder;
     const cash = leaderboard.FindFirstChild("Cash") as NumberValue;
 
-    function giveData() {
-
-        cash.Value = data.Cash
+    function loadData() { // later return true if all good else kick
+        cash.Value = data.Cash;
     }
 
-    giveData();
-    dataUpdater(player);
+    loadData();
+    dataUdapter(player);
 }
 
 // 2
 function init(player: Player) {
 
-    function create() {
-        // leaderboard
-        const leaderboard = new Instance("Folder");
-        leaderboard.Name = "leaderboard";
+    // leaderstat
+    const leaderstats = new Instance("Folder");
+    leaderstats.Name = "leaderstats";
 
-        const Cash = new Instance("NumberValue");
-        Cash.Name = "Cash";
-        Cash.Value = 0;
+    const Cash = new Instance("NumberValue");
+    Cash.Name = "Cash";
+    Cash.Value = 0;
 
-        leaderboard.Parent = player;
-        Cash.Parent = leaderboard;
+    leaderstats.Parent = player;
+    Cash.Parent = leaderstats;
 
-    }
-
-    // function isReady(): boolean {
-
-    //     return false;
-    // }
-
-    // if ( isReady() === true ) {
-    //     loadDataForPlayer(player);
-    // } else { create(); }
-
-    create();
     loadDataForPlayer(player);
 }
 

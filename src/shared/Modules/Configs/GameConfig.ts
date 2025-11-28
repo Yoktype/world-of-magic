@@ -1,7 +1,12 @@
 import { RunService, ReplicatedStorage } from "@rbxts/services";
 
 // constants
+const Assets = ReplicatedStorage.WaitForChild("Assets") as Folder;
 const Events = ReplicatedStorage.WaitForChild("Events") as Folder;
+
+const Weapons = Assets.FindFirstChild("Weapons") as Folder;
+const ObjectPoolBullets = Weapons.FindFirstChild("ObjectPoolBullets") as Folder;
+
 const MouseEvents = Events.FindFirstChild("MouseEvents") as Folder;
 const WeaponEvents = Events.FindFirstChild("WeaponEvents") as Folder;
 
@@ -44,14 +49,20 @@ export default {
     isServer,
     isClient,
 
+    // folders
+    Assets: Assets,
+    Weapons: Weapons,
+    ObjectPoolBullets: ObjectPoolBullets,
+    Events: Events,
+    MouseEvents: MouseEvents,
+    WeaponEvents: WeaponEvents,
+
     // data service
     DATA_NAME: "unknown",
     PROFILE_TEMPLATE: {
 
-        Cash: 100,
+        Cash: 1000,
 
-
-        
         EndSession: () => {},
     },
 
