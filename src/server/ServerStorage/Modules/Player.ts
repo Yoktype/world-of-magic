@@ -7,6 +7,11 @@ const PlayerStore = ProfileStore.New(GameConfig.DATA_NAME, GameConfig.PROFILE_TE
 const Profiles = new Map<number, ProfileStore.Profile<typeof GameConfig.PROFILE_TEMPLATE>>();
 
 // private functions
+// for Bindable Function in network
+function getPlayerProfile(player: Player): ProfileStore.Profile<typeof GameConfig.PROFILE_TEMPLATE> | undefined {
+    return Profiles.get(player.UserId);
+}
+
 // 4
 function dataUdapter(player: Player): void {
     if ( RunService.IsStudio() === true ) return;
@@ -27,9 +32,22 @@ function dataUdapter(player: Player): void {
         first step, change value in profile, second step reward
         take Remote? and use cash.Value = profile.Data.Cash;
     */ 
+
+    // okay i cant keep here BINDABLE only server events for this 
+
     cash.Changed.Connect(() => {
         profile.Data.Cash = cash.Value;
     }); 
+
+
+    // bindable events
+
+
+    // bindable functions
+
+
+
+
 
 }
 
@@ -43,8 +61,8 @@ function loadDataForPlayer(player: Player): void {
 
     const data = profile.Data;
 
-    const leaderboard = player.FindFirstChild("leaderboard") as Folder;
-    const cash = leaderboard.FindFirstChild("Cash") as NumberValue;
+    const leaderstats = player.FindFirstChild("leaderstats") as Folder;
+    const cash = leaderstats.FindFirstChild("Cash") as NumberValue;
 
     function loadData() { // later return true if all good else kick
         cash.Value = data.Cash;
@@ -68,6 +86,8 @@ function init(player: Player) {
     leaderstats.Parent = player;
     Cash.Parent = leaderstats;
 
+    task.wait(1); // for init all 
+
     loadDataForPlayer(player);
 }
 
@@ -75,9 +95,9 @@ function init(player: Player) {
 function loadProfile(player: Player): void {
     const key = `User_` + player.UserId;
     const profile = PlayerStore.StartSessionAsync(key, {
-        Cancel() {
+        Cancel: (() => {
             return player.Parent !== Players;
-        },
+        })
     });
 
     if ( profile !== undefined ) {
@@ -100,11 +120,6 @@ function loadProfile(player: Player): void {
     }
 
     init(player);
-}
-
-// for Bindable Function in network
-function getPlayerProfile(player: Player): ProfileStore.Profile<typeof GameConfig.PROFILE_TEMPLATE> | undefined {
-    return Profiles.get(player.UserId);
 }
 
 // setup

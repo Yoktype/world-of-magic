@@ -1,4 +1,4 @@
-export default abstract class WeaponClass implements Weapon {
+export default class WeaponClass {
     public model: Tool;
     public bullet: BasePart;
     public bulletSpeed: number;
@@ -19,8 +19,11 @@ export default abstract class WeaponClass implements Weapon {
         this.cooldown = cooldown;
     }
 
-    attack(player: Player): [Player, Player] | [Player, undefined] {
+    /*
+        how work oop, classes
 
-        return [player, player]
-    }
+        i can't create here a methods because i created
+        at another class where i use this class
+    */
+
 }

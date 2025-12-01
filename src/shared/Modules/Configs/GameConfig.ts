@@ -22,6 +22,7 @@ if ( isServer === true ) {
     const object = {
 
         // bindable events (in ServerStorage)
+        // ProfileStore (data)
 
         // bindable function (in ServerStorage)
         
@@ -63,7 +64,6 @@ export default {
 
         Cash: 1000,
 
-        EndSession: () => {},
     },
 
     // weapon

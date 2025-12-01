@@ -5,10 +5,10 @@ import init from "shared/Modules/Utils/initialize";
 const LOCAL_PLAYER = Players.LocalPlayer as Player;
 
 // imports
-const network = require(LOCAL_PLAYER.FindFirstChild("network") as ModuleScript);
+const network = require(LOCAL_PLAYER.WaitForChild("PlayerScripts").FindFirstChild("network") as ModuleScript);
 
 // folders
-const Modules = LOCAL_PLAYER.FindFirstChild("Modules") as Folder;
+const Modules = LOCAL_PLAYER.WaitForChild("PlayerScripts").FindFirstChild("Modules") as Folder;
 
 // setup
 init(Modules);

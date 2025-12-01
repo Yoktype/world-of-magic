@@ -1,13 +1,14 @@
 import { ReplicatedStorage, Players } from "@rbxts/services";
 import GameConfig from "shared/Modules/Configs/GameConfig";
-import BaseWeaponConfig from "shared/Modules/Configs/Weapons/BaseWeaponConfig";
+import BaseWeaponClass from "./Classes/Weapons/Base-Weapon-Class";
+import BaseWeaponConfig from "shared/Modules/Configs/Weapons/Base-Weapon-Config";
 
 // only server scope
 if (GameConfig.server === undefined) throw"";
 
 // init configs
 const WeaponsConfigs = new Map<string, Weapon>();
-WeaponsConfigs.set(GameConfig.BASE_WEAPON, BaseWeaponConfig);
+WeaponsConfigs.set(GameConfig.BASE_WEAPON, BaseWeaponClass.weapon);
 
 // private functions
 function newWeaponForPlayer(player: Player, WeaponName: string): void {
@@ -28,7 +29,7 @@ function newWeaponForPlayer(player: Player, WeaponName: string): void {
 }
 /* debug
     Players.PlayerAdded.Connect(player => {
-        newWeaponForPlayer(player, GameConfig.server.BASE_WEAPON)
+        newWeaponForPlayer(player, GameConfig.BASE_WEAPON)
     })
 */
 
@@ -57,6 +58,7 @@ function hit(victim: Player, config: Weapon): boolean {
     const humanoid = character.FindFirstChild("Humanoid") as Humanoid;
 
     const health = math.max(0, humanoid.Health - damage);
+    print(`health, in hit function : ${health}`)
     humanoid.Health = health;
 
     if ( health <= 0 ) return true;
@@ -103,6 +105,12 @@ function attack(player: Player, tool: Tool | BasePart): void {
 }
 
 // setup
+Players.PlayerAdded.Connect(player => {
+    task.wait(7);
+    print(`give weapon for : ${player.DisplayName}`);
+    newWeaponForPlayer(player, GameConfig.BASE_WEAPON);
+})
+
 GameConfig.attackEvent.OnServerEvent.Connect((player: Player, args) => {
     if ( player === undefined || args === undefined ) return;
 

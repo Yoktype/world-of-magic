@@ -1,6 +1,5 @@
 // shared config
 
-import { ReplicatedStorage } from "@rbxts/services";
 import GameConfig from "../GameConfig";
 
 // constants
@@ -11,7 +10,7 @@ export default {
     model: baseWeapon,
     bullet: baseBullet,
 
-    bulletSpeed: 50,
+    bulletSpeed: 2,
     damage: 20,
     cooldown: 1,
 

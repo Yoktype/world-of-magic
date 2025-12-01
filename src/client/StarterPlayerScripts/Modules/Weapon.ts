@@ -1,5 +1,5 @@
 import GameConfig from "shared/Modules/Configs/GameConfig";
-import BaseWeaponConfig from "shared/Modules/Configs/Weapons/BaseWeaponConfig";
+import BaseWeaponConfig from "shared/Modules/Configs/Weapons/Base-Weapon-Config";
 
 // private functions
 function unequipAnimationPlay(): void {
@@ -17,11 +17,11 @@ function newWeapon(tool: Tool) {
 
     tool.Equipped.Connect(() => { equipAnimationPlay(); });
     tool.Unequipped.Connect(() => { unequipAnimationPlay(); });
-    tool.Activated.Connect(() => { GameConfig.attackEvent.FireServer(); });
+    tool.Activated.Connect(() => { GameConfig.attackEvent.FireServer(tool); });
 }
 
 // setup
-GameConfig.newWeaponEvent.OnClientEvent.Connect((args) => {
+GameConfig.newWeaponEvent.OnClientEvent.Connect((args: Tool) => {
     if ( args === undefined ) return;
 
     const tool = args as Tool;
