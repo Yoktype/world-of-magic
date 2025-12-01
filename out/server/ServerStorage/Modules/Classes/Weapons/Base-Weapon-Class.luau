@@ -25,7 +25,7 @@ do
 	function BaseWeaponClass:constructor(...)
 		super.constructor(self, ...)
 	end
-	function BaseWeaponClass:getBullet()
+	function BaseWeaponClass:getRender()
 		local bulletModel = GameConfig.ObjectPoolBullets:FindFirstChild(self.bullet.Name)
 		if bulletModel ~= nil then
 			return bulletModel
@@ -35,32 +35,41 @@ do
 		bullet.Anchored = true
 		return bullet
 	end
-	function BaseWeaponClass:bindTouchSignal(bullet, playerCharacter)
-		if bullet == nil then
-			return nil
-		end
-		local conneciton = bullet.Touched:Connect(function(otherPart)
-			if otherPart:IsDescendantOf(playerCharacter) or otherPart.Name == self.model.Name then
-				return nil
+	function BaseWeaponClass:getSetup(player)
+		local function Setup()
+			local mouseHitPosition = GameConfig.getMousePositionInWorldEvent:InvokeClient(player)
+			if mouseHitPosition == nil then
+				return { false, nil }
 			end
-			-- print(otherPart)
-			bullet.Parent = GameConfig.ObjectPoolBullets
-			local victim = Players:GetPlayerFromCharacter(otherPart.Parent)
-			self.victim = victim
-		end)
-		return conneciton
+			local playerCharacter = player.Character or (select(2, player.CharacterAdded:Wait()))
+			local humanoidRootPart = playerCharacter:FindFirstChild("HumanoidRootPart")
+			local setup = {
+				mouseHitPosition = mouseHitPosition,
+				playerCharacter = playerCharacter,
+				humanoidRootPart = humanoidRootPart,
+			}
+			return { true, setup }
+		end
+		local _binding = Setup()
+		local bool = _binding[1]
+		local playerSetup = _binding[2]
+		if bool == true then
+			return playerSetup
+		end
+		return nil
 	end
-	function BaseWeaponClass:startBulletMove(bullet, bulletPostion, distance, speed, travelTime, endPosition)
-		print(distance)
-		print(speed)
-		print(travelTime)
+	function BaseWeaponClass:getStartCframe(cf)
+		local lookVector = cf.LookVector
+		local startPosition = CFrame.lookAlong(cf.Position, lookVector)
+		return startPosition
+	end
+	function BaseWeaponClass:move(bullet, bulletPostion, distance, move, endPosition)
 		do
 			local i = 0
 			local _shouldIncrement = false
 			while true do
 				if _shouldIncrement then
-					i += speed
-					i += i
+					i += move
 				else
 					_shouldIncrement = true
 				end
@@ -70,43 +79,52 @@ do
 				if bullet.Parent ~= Workspace then
 					break
 				end
-				print("move")
 				local alpha = i / distance
 				local newPostion = bulletPostion:Lerp(endPosition, alpha)
-				local _endPosition = endPosition
-				local newCFrame = CFrame.lookAlong(newPostion, newPostion - _endPosition)
-				bullet:PivotTo(newCFrame)
-				task.wait(.1)
+				bullet.Position = newPostion
+				RunService.Heartbeat:Wait()
 			end
 		end
+		-- distance = travelTime, i += travelTime / 240
 	end
 	function BaseWeaponClass:attack(player)
 		if RunService:IsServer() == false then
 			return { player, nil }
 		end
-		local fireball = self:getBullet()
-		local mouseHitPosition = GameConfig.getMousePositionInWorldEvent:InvokeClient(player)
-		if mouseHitPosition == nil then
+		local victim
+		local fireball = self:getRender()
+		local playerSetup = self:getSetup(player)
+		if playerSetup == nil then
 			return { player, nil }
 		end
-		local playerCharacter = player.Character or (select(2, player.CharacterAdded:Wait()))
-		local humanoidRootPart = playerCharacter:FindFirstChild("HumanoidRootPart")
-		local lookVector = humanoidRootPart.CFrame.LookVector
-		local startPosition = CFrame.lookAlong(humanoidRootPart.CFrame.Position, lookVector)
-		local distance = (startPosition.Position - mouseHitPosition).Magnitude
+		local startPosition = self:getStartCframe(playerSetup.humanoidRootPart.CFrame)
+		local _position = startPosition.Position
+		local _mouseHitPosition = playerSetup.mouseHitPosition
+		local distance = math.max(0, ((_position - _mouseHitPosition).Magnitude + 1))
 		local travelTime = distance / self.bulletSpeed
-		local smoothPath = travelTime * task.wait()
+		local move = (self.bulletSpeed / 144)
+		print(`loop settings travelTime: {travelTime}, move: {move}`)
 		-- start loop
-		self.victim = nil
+		victim = nil
 		fireball:PivotTo(startPosition)
 		fireball.Parent = Workspace
-		local conneciton = self:bindTouchSignal(fireball, playerCharacter)
-		self:startBulletMove(fireball, fireball.Position, distance, self.bulletSpeed, travelTime, mouseHitPosition)
-		local _result = conneciton
-		if _result ~= nil then
-			_result:Disconnect()
+		-- property don't work how i would like
+		fireball.Touched:Connect(function(otherPart)
+			local character = otherPart.Parent
+			local humanoid = character:FindFirstChild("Humanoid")
+			local plr = Players:GetPlayerFromCharacter(otherPart.Parent)
+			if humanoid == nil or plr == player then
+				return nil
+			end
+			fireball.Parent = GameConfig.ObjectPoolBullets
+			victim = character
+		end)
+		self:move(fireball, fireball.Position, distance, move, playerSetup.mouseHitPosition)
+		if fireball.Parent == Workspace then
+			fireball.Parent = GameConfig.ObjectPoolBullets
 		end
-		return { player, self.victim }
+		print(`loop stoping return values: player: {player.Name}, victim: {victim}`)
+		return { player, victim }
 	end
 end
 local default = {

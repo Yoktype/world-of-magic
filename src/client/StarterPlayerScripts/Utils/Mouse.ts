@@ -8,20 +8,16 @@ export function getMousePositionOnScreen(): Vector2 {
     return UserInputService.GetMouseLocation();
 }
 
-export function getMouseInWorld(): [ BasePart, Vector3 ] | [ undefined ] {
+export function getMouseInWorld(): [ BasePart, Vector3 ] | [ undefined ,Vector3 ] {
     const mousePositionOnScreen = getMousePositionOnScreen();
     const ray = Camera.ViewportPointToRay(mousePositionOnScreen.X, mousePositionOnScreen.Y);
     
     const origin = ray.Origin;
     const direction = ray.Direction.mul(200);
     
-    // const params = new RaycastParams();
-    // params.FilterType = Enum.RaycastFilterType.Exclude;
-    // params.FilterDescendantsInstances = [  ];
-
     const result = Workspace.Raycast(origin, direction);
 
-    if ( result === undefined ) return [ undefined ]
+    if ( result === undefined ) return [ undefined, direction ]
     
     const instance = result.Instance;
     const position = result.Position;
@@ -31,13 +27,12 @@ export function getMouseInWorld(): [ BasePart, Vector3 ] | [ undefined ] {
 
 export function getMousePositionInWorld(): Vector3 | undefined {
     const [ instance, position ] = getMouseInWorld();
-
     if ( position === undefined ) return undefined;
     return position;
 }
 
 export function getMouseHitInWolrd(): BasePart | undefined {
     const [ instance, position ] = getMouseInWorld();
-    if ( instance === undefined || position === undefined ) return undefined;
+    if ( instance === undefined ) return undefined;
     return instance;
 }

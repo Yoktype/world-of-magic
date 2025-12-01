@@ -13,11 +13,11 @@ local _bASE_WEAPON = GameConfig.BASE_WEAPON
 local _weapon = BaseWeaponClass.weapon
 WeaponsConfigs[_bASE_WEAPON] = _weapon
 -- private functions
+-- activated this function from ProfileStore only by bindable
 local function newWeaponForPlayer(player, WeaponName)
 	if GameConfig.server == nil then
 		error("")
 	end
-	-- activated this function from ProfileStore only by bindable
 	local _weaponName = WeaponName
 	local config = WeaponsConfigs[_weaponName]
 	if config == nil then
@@ -31,13 +31,6 @@ local function newWeaponForPlayer(player, WeaponName)
 	weapon.Parent = player:FindFirstChild("Backpack")
 	GameConfig.newWeaponEvent:FireClient(player, weapon)
 end
---[[
-	 debug
-	    Players.PlayerAdded.Connect(player => {
-	        newWeaponForPlayer(player, GameConfig.server.BASE_WEAPON)
-	    })
-	
-]]
 local function getWeaponState(tool)
 	if GameConfig.server == nil then
 		error("")
@@ -66,9 +59,9 @@ end
 ]]
 local function hit(victim, config)
 	local damage = config.damage
-	local character = victim.Character or (select(2, victim.CharacterAdded:Wait()))
-	local humanoid = character:FindFirstChild("Humanoid")
+	local humanoid = victim:FindFirstChild("Humanoid")
 	local health = math.max(0, humanoid.Health - damage)
+	print(`health, in hit function : {health}`)
 	humanoid.Health = health
 	if health <= 0 then
 		return true
@@ -108,15 +101,20 @@ local function attack(player, tool)
 	if victim == nil then
 		return nil
 	end
+	reward(attacker)
 	local isKill = hit(victim, weaponConfig)
+	local playerVictim = Players:GetPlayerFromCharacter(victim)
+	if playerVictim == nil then
+		return nil
+	end
 	if isKill == true then
-		reward(attacker)
-		killFeed(attacker, victim)
+		killFeed(attacker, playerVictim)
 	end
 end
 -- setup
 Players.PlayerAdded:Connect(function(player)
 	task.wait(7)
+	print(`give weapon for : {player.DisplayName}`)
 	newWeaponForPlayer(player, GameConfig.BASE_WEAPON)
 end)
 GameConfig.attackEvent.OnServerEvent:Connect(function(player, args)

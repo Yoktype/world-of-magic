@@ -10,14 +10,13 @@ world-of-magic
 
 
     TODO :
-        - Base weapon attack logic
-            - smooth move, for fireball
-            - touching detect
-            - hit handler? 
-        
-        - Mouse module
-            -  if raycast instance undefined then return click direction + position ViewportPointToRay
+        - Mouse return POSITION ALWAYS
+            - bullet direction not dierct [Bug?]
 
+
+        - Base weapon logic attack
+            - taste
+            - Bullet touch, not has reacted 
 
 
 
@@ -44,4 +43,9 @@ world-of-magic
                     "ignoreUnknownInstances": true
                 }
 
+
+    BUGS
+        - WeaponHandler
+            - attack function, .attack => :attack
+    
 */

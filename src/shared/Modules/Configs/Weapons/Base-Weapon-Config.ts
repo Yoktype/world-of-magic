@@ -7,14 +7,16 @@ const baseWeapon = GameConfig.Weapons.FindFirstChild(GameConfig.BASE_WEAPON) as 
 const baseBullet = GameConfig.Weapons.FindFirstChild(GameConfig.BASE_BULLET) as BasePart;
 
 export default {
+
     model: baseWeapon,
     bullet: baseBullet,
 
-    bulletSpeed: 2,
+    bulletSpeed: 100,
     damage: 20,
     cooldown: 1,
 
     attackAnimation: "", // string | Instance ?
     equipAnimation: "", // string | Instance ?
     unequipAnimation: "", // string | Instance ?
+    
 }

@@ -5,15 +5,22 @@ import WeaponClass from "../Weapon";
 import BaseWeaponConfig from "shared/Modules/Configs/Weapons/Base-Weapon-Config";
 import GameConfig from "shared/Modules/Configs/GameConfig";
 
+interface PlayerSetup {
+    mouseHitPosition: Vector3,
+    playerCharacter: Model,
+    humanoidRootPart: BasePart
+}
+
+
 class BaseWeaponClass extends WeaponClass {
+
     private victim!: Player | undefined;
 
-    private getBullet(): BasePart {
-        const bulletModel = GameConfig.ObjectPoolBullets.FindFirstChild(this.bullet.Name) as BasePart;
-        if ( bulletModel !== undefined ) {
 
-            return bulletModel;
-        }
+    private getRender(): BasePart {
+        const bulletModel = GameConfig.ObjectPoolBullets.FindFirstChild(this.bullet.Name) as BasePart;
+        if ( bulletModel !== undefined ) return bulletModel;
+    
         const bullet = this.bullet.Clone();
         bullet.CanCollide = false;
         bullet.Anchored = true;
@@ -21,87 +28,112 @@ class BaseWeaponClass extends WeaponClass {
         return bullet;
     }
 
-    private bindTouchSignal(bullet: BasePart, playerCharacter: Model) {
-        if ( bullet === undefined ) return;
+    private getSetup(player: Player): PlayerSetup | undefined {
 
-        let conneciton = bullet.Touched.Connect(otherPart => {
-            if ( 
-                otherPart.IsDescendantOf(playerCharacter) ||
-                otherPart.Name === this.model.Name
-            ) return;
+        function Setup(): [boolean, PlayerSetup] | [boolean, undefined] {
+            const mouseHitPosition = GameConfig.getMousePositionInWorldEvent.InvokeClient(player) as  Vector3 | undefined;
+            if ( mouseHitPosition === undefined ) return [false, undefined];
+            
+            const playerCharacter: Model = player.Character ?? player.CharacterAdded.Wait()[1];
+            const humanoidRootPart = playerCharacter.FindFirstChild("HumanoidRootPart") as BasePart;
 
-            // print(otherPart)
+            const setup = {
+                mouseHitPosition: mouseHitPosition,
+                playerCharacter: playerCharacter,
+                humanoidRootPart: humanoidRootPart,
+            }
 
-            bullet.Parent = GameConfig.ObjectPoolBullets;
-
-            const victim = Players.GetPlayerFromCharacter(otherPart.Parent);
-
-            this.victim = victim;
-        });
-
-        return conneciton;
-    }
-
-    private startBulletMove(bullet: BasePart, bulletPostion: Vector3,distance: number, speed: number, travelTime: number, endPosition: Vector3) {
-        print(distance)
-        print(speed)
-        print(travelTime)
-        for (let i = 0; i <= distance; i += i += (speed)) {
-            if ( bullet.Parent !== Workspace ) break;
-
-            print("move")
-            const alpha = i / distance;
-            const newPostion = bulletPostion.Lerp(endPosition, alpha);
-
-            const newCFrame = CFrame.lookAlong(newPostion, newPostion.sub(endPosition));
-            bullet.PivotTo(newCFrame);
-
-            task.wait(.1)
+            return [true, setup];
         }
 
+        const [bool, playerSetup] = Setup();
+        if ( bool === true ) {
+            return playerSetup;
+        }
+
+        return undefined;
     }
 
-    attack(player: Player): [Player, Player] | [Player, undefined] {
+    private getStartCframe(cf: CFrame): CFrame {
+        const lookVector: Vector3 = cf.LookVector;
+        const startPosition = CFrame.lookAlong(
+            cf.Position,
+            lookVector
+        )
+
+        return startPosition;
+    }
+
+    private move(
+        bullet: BasePart,
+        bulletPostion: Vector3,
+        distance: number,
+        move: number,
+        endPosition: Vector3,
+    ) {
+        for (let i = 0; i <= distance; i += move) {
+            if ( bullet.Parent !== Workspace ) break;
+
+            const alpha = i / distance;
+            const newPostion = bulletPostion.Lerp(endPosition, alpha);
+            bullet.Position = newPostion;
+
+            RunService.Heartbeat.Wait();
+        }
+        // distance = travelTime, i += travelTime / 240
+
+    }
+
+    attack(player: Player): [Player, Model] | [Player, undefined] {
         if (  RunService.IsServer() === false  ) return [player, undefined];
 
-        const fireball = this.getBullet();
-        
-        const mouseHitPosition = GameConfig.getMousePositionInWorldEvent.InvokeClient(player) as  Vector3 | undefined;
-        if ( mouseHitPosition === undefined ) return [player, undefined];
-        
-        const playerCharacter: Model = player.Character ?? player.CharacterAdded.Wait()[1];
-        const humanoidRootPart = playerCharacter.FindFirstChild("HumanoidRootPart") as BasePart;
-        
-        const lookVector: Vector3 = humanoidRootPart.CFrame.LookVector;
-        const startPosition = CFrame.lookAlong(humanoidRootPart.CFrame.Position, lookVector)
-        
-        const distance = (startPosition.Position.sub(mouseHitPosition)).Magnitude;
-        const travelTime = distance / this.bulletSpeed;
-        const smoothPath = travelTime * task.wait();
+        let victim!: Model | undefined;
+        const fireball = this.getRender();
 
-        
+        const playerSetup = this.getSetup(player) as PlayerSetup | undefined;
+        if ( playerSetup === undefined ) return [player, undefined];
+
+        const startPosition = this.getStartCframe(playerSetup.humanoidRootPart.CFrame);
+
+        const distance = math.max( 0, (( startPosition.Position.sub(playerSetup.mouseHitPosition)).Magnitude + 1 ));
+        const travelTime = distance / this.bulletSpeed;
+        const move = (this.bulletSpeed / 144); // 144 - steps
+
+        print(`loop settings travelTime: ${travelTime}, move: ${move}`)
+
         // start loop
-        this.victim = undefined;
+        victim = undefined;
         fireball.PivotTo(startPosition);
         fireball.Parent = Workspace;
         
-        const conneciton = this.bindTouchSignal(fireball, playerCharacter);
-        this.startBulletMove(
+        // property don't work how i would like
+        fireball.Touched.Connect((otherPart) => {
+            const character = otherPart.Parent as Model;
+            const humanoid = character.FindFirstChild("Humanoid") as Humanoid;
+            const plr = Players.GetPlayerFromCharacter(otherPart.Parent);
+            if ( humanoid === undefined || plr === player ) return;
+
+            fireball.Parent = GameConfig.ObjectPoolBullets;
+            victim = character;
+        })
+
+        this.move(
             fireball,
             fireball.Position,
             distance,
-            this.bulletSpeed,
-            travelTime,
-            mouseHitPosition
+            move,
+            playerSetup.mouseHitPosition,
         );
     
-        conneciton?.Disconnect();
-        return [player, this.victim];
-    }
+        if ( fireball.Parent === Workspace ) fireball.Parent = GameConfig.ObjectPoolBullets;
 
+        print(`loop stoping return values: player: ${player.Name}, victim: ${victim}`)
+        return [player, victim];
+    }
 }
 
 export default {
+
     weapon: new BaseWeaponClass(
         BaseWeaponConfig.model,
         BaseWeaponConfig.bullet,
@@ -109,4 +141,5 @@ export default {
         BaseWeaponConfig.damage,
         BaseWeaponConfig.cooldown,
     ),
+
 }

@@ -11,10 +11,10 @@ const WeaponsConfigs = new Map<string, Weapon>();
 WeaponsConfigs.set(GameConfig.BASE_WEAPON, BaseWeaponClass.weapon);
 
 // private functions
+// activated this function from ProfileStore only by bindable
 function newWeaponForPlayer(player: Player, WeaponName: string): void {
     if (GameConfig.server === undefined) throw""; // yandere code
 
-    // activated this function from ProfileStore only by bindable
 
     let config = WeaponsConfigs.get(WeaponName);
     if ( config === undefined ) config = WeaponsConfigs.get(GameConfig.BASE_WEAPON) as Weapon;
@@ -27,11 +27,6 @@ function newWeaponForPlayer(player: Player, WeaponName: string): void {
     weapon.Parent = player.FindFirstChild("Backpack");
     GameConfig.newWeaponEvent.FireClient(player, weapon);
 }
-/* debug
-    Players.PlayerAdded.Connect(player => {
-        newWeaponForPlayer(player, GameConfig.BASE_WEAPON)
-    })
-*/
 
 function getWeaponState(tool: Tool | BasePart): string {
     if (GameConfig.server === undefined) throw""; // yandere code
@@ -52,10 +47,10 @@ function reward(player: Player): void {
     ProfileStore reward take and save, upd UI
 */
 
-function hit(victim: Player, config: Weapon): boolean {
+function hit(victim: Model, config: Weapon): boolean {
     const damage = config.damage;
-    const character = victim.Character || victim.CharacterAdded.Wait()[1];
-    const humanoid = character.FindFirstChild("Humanoid") as Humanoid;
+
+    const humanoid = victim.FindFirstChild("Humanoid") as Humanoid;
 
     const health = math.max(0, humanoid.Health - damage);
     print(`health, in hit function : ${health}`)
@@ -96,11 +91,14 @@ function attack(player: Player, tool: Tool | BasePart): void {
 
     const [attacker, victim] = weaponConfig.attack(player);
     if ( victim === undefined ) return;
-
+    reward(attacker);
     const isKill = hit(victim, weaponConfig);
+
+    const playerVictim = Players.GetPlayerFromCharacter(victim);
+    if ( playerVictim === undefined ) return;
+
     if ( isKill === true ) {
-        reward(attacker);
-        killFeed(attacker, victim);
+        killFeed(attacker, playerVictim);
     }
 }
 
