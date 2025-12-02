@@ -1,5 +1,5 @@
-import GameConfig from "shared/Modules/Configs/GameConfig";
-import BaseWeaponConfig from "shared/Modules/Configs/Weapons/Base-Weapon-Config";
+import GameConfig from "shared/Modules/Configs/game-config";
+import BaseWeaponConfig from "shared/Modules/Configs/Weapons/base-weapon-config";
 
 // private functions
 function unequipAnimationPlay(): void {

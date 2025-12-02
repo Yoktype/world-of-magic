@@ -4,6 +4,7 @@ export default class WeaponClass {
     public bulletSpeed: number;
     public damage: number;
     public cooldown: number;
+    public range: number;
 
     constructor(
         model: Tool,
@@ -11,12 +12,14 @@ export default class WeaponClass {
         bulletSpeed: number,
         damage: number,
         cooldown: number,
+        range: number,
     ) {
         this.model = model;
         this.bullet = bullet;
         this.bulletSpeed = bulletSpeed;
         this.damage = damage;
         this.cooldown = cooldown;
+        this.range = range;
     }
 
     /*

@@ -9,18 +9,23 @@ world-of-magic
         - Level system
 
 
-    TODO :
-        - Mouse return POSITION ALWAYS
-            - bullet direction not dierct [Bug?]
+    TODO:
+        - fix:
+            [X] weapon inf range
+            [X] mouse hit Position has offset direction
+
+        - new:
+            - reward-service
+            - profile-store
 
 
-        - Base weapon logic attack
-            - taste
-            - Bullet touch, not has reacted 
 
 
 
-    Create :
+
+
+
+    Create:
         - ReplicatedStorage
             - Events
                 - WeaponEvents / Folder
@@ -30,13 +35,14 @@ world-of-magic
                     - GetMousePositionOnScreenEvent / RemoteFunction
                     - GetMouseHitInWolrdEvent / RemoteFunction
                     - GetMousePositionInWorldEvent / RemoteFunction
+                    - GetCameraRayEvent / RemoteFunction 
 
             - Assets / folder
                 - Weapons / folder
                     - BaseWeapon / tool
                     - BaseBullet / BasePart
 
-    ROJO :
+    ROJO:
         - ignore
             init.meta.json
                 {
@@ -44,7 +50,7 @@ world-of-magic
                 }
 
 
-    BUGS
+    BUGS:
         - WeaponHandler
             - attack function, .attack => :attack
     

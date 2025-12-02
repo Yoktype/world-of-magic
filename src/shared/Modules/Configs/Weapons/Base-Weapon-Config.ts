@@ -1,6 +1,6 @@
 // shared config
 
-import GameConfig from "../GameConfig";
+import GameConfig from "../game-config";
 
 // constants
 const baseWeapon = GameConfig.Weapons.FindFirstChild(GameConfig.BASE_WEAPON) as Tool;
@@ -14,6 +14,7 @@ export default {
     bulletSpeed: 100,
     damage: 20,
     cooldown: 1,
+    range: 20,
 
     attackAnimation: "", // string | Instance ?
     equipAnimation: "", // string | Instance ?

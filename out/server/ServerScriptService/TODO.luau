@@ -12,13 +12,7 @@
 	
 	
 	    TODO :
-	        - Mouse return POSITION ALWAYS
-	            - bullet direction not dierct [Bug?]
-	
-	
-	        - Base weapon logic attack
-	            - taste
-	            - Bullet touch, not has reacted 
+	        - 
 	
 	
 	

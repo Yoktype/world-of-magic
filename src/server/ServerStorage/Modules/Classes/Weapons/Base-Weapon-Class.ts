@@ -1,21 +1,17 @@
 // server class
 
 import { Players, RunService, Workspace } from "@rbxts/services";
-import WeaponClass from "../Weapon";
-import BaseWeaponConfig from "shared/Modules/Configs/Weapons/Base-Weapon-Config";
-import GameConfig from "shared/Modules/Configs/GameConfig";
+import WeaponClass from "../weapon";
+import BaseWeaponConfig from "shared/Modules/Configs/Weapons/base-weapon-config";
+import GameConfig from "shared/Modules/Configs/game-config";
 
 interface PlayerSetup {
-    mouseHitPosition: Vector3,
+    endPosition: Vector3,
     playerCharacter: Model,
     humanoidRootPart: BasePart
 }
 
-
 class BaseWeaponClass extends WeaponClass {
-
-    private victim!: Player | undefined;
-
 
     private getRender(): BasePart {
         const bulletModel = GameConfig.ObjectPoolBullets.FindFirstChild(this.bullet.Name) as BasePart;
@@ -28,36 +24,41 @@ class BaseWeaponClass extends WeaponClass {
         return bullet;
     }
 
+    private getEndPosition(player: Player): Vector3 | undefined {
+        const ray = GameConfig.getCameraRay.InvokeClient(player) as Ray | undefined;
+        if ( ray === undefined ) return;
+
+        const direction = ray.Direction.mul(this.range);
+        const endPosition = ray.Origin.add(direction);
+
+        return endPosition;
+    }
+
     private getSetup(player: Player): PlayerSetup | undefined {
 
-        function Setup(): [boolean, PlayerSetup] | [boolean, undefined] {
-            const mouseHitPosition = GameConfig.getMousePositionInWorldEvent.InvokeClient(player) as  Vector3 | undefined;
-            if ( mouseHitPosition === undefined ) return [false, undefined];
-            
-            const playerCharacter: Model = player.Character ?? player.CharacterAdded.Wait()[1];
-            const humanoidRootPart = playerCharacter.FindFirstChild("HumanoidRootPart") as BasePart;
+        const endPosition = this.getEndPosition(player);
+        if ( endPosition === undefined ) return undefined;
+        
+        const playerCharacter: Model = player.Character ?? player.CharacterAdded.Wait()[1];
+        const humanoidRootPart = playerCharacter.FindFirstChild("HumanoidRootPart") as BasePart;
+        if ( humanoidRootPart === undefined ) return undefined;
 
-            const setup = {
-                mouseHitPosition: mouseHitPosition,
-                playerCharacter: playerCharacter,
-                humanoidRootPart: humanoidRootPart,
-            }
 
-            return [true, setup];
+        const setup = {
+            endPosition: endPosition,
+            playerCharacter: playerCharacter,
+            humanoidRootPart: humanoidRootPart,
         }
 
-        const [bool, playerSetup] = Setup();
-        if ( bool === true ) {
-            return playerSetup;
-        }
+    
 
-        return undefined;
+        return setup;
     }
 
     private getStartCframe(cf: CFrame): CFrame {
         const lookVector: Vector3 = cf.LookVector;
         const startPosition = CFrame.lookAlong(
-            cf.Position,
+            cf.Position.mul(new Vector3(2, 2, 0)),
             lookVector
         )
 
@@ -80,8 +81,6 @@ class BaseWeaponClass extends WeaponClass {
 
             RunService.Heartbeat.Wait();
         }
-        // distance = travelTime, i += travelTime / 240
-
     }
 
     attack(player: Player): [Player, Model] | [Player, undefined] {
@@ -95,11 +94,8 @@ class BaseWeaponClass extends WeaponClass {
 
         const startPosition = this.getStartCframe(playerSetup.humanoidRootPart.CFrame);
 
-        const distance = math.max( 0, (( startPosition.Position.sub(playerSetup.mouseHitPosition)).Magnitude + 1 ));
-        const travelTime = distance / this.bulletSpeed;
-        const move = (this.bulletSpeed / 144); // 144 - steps
-
-        print(`loop settings travelTime: ${travelTime}, move: ${move}`)
+        const distance = math.max( 0, (( startPosition.Position.sub(playerSetup.endPosition)).Magnitude + 1 ));
+        const move = ( this.bulletSpeed / 144 ); // 144 - steps
 
         // start loop
         victim = undefined;
@@ -122,12 +118,11 @@ class BaseWeaponClass extends WeaponClass {
             fireball.Position,
             distance,
             move,
-            playerSetup.mouseHitPosition,
+            playerSetup.endPosition,
         );
     
         if ( fireball.Parent === Workspace ) fireball.Parent = GameConfig.ObjectPoolBullets;
 
-        print(`loop stoping return values: player: ${player.Name}, victim: ${victim}`)
         return [player, victim];
     }
 }
@@ -140,6 +135,7 @@ export default {
         BaseWeaponConfig.bulletSpeed,
         BaseWeaponConfig.damage,
         BaseWeaponConfig.cooldown,
+        BaseWeaponConfig.range,
     ),
 
 }

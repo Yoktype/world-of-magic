@@ -1,7 +1,6 @@
 import { ReplicatedStorage, Players } from "@rbxts/services";
-import GameConfig from "shared/Modules/Configs/GameConfig";
-import BaseWeaponClass from "./Classes/Weapons/Base-Weapon-Class";
-import BaseWeaponConfig from "shared/Modules/Configs/Weapons/Base-Weapon-Config";
+import GameConfig from "shared/Modules/Configs/game-config";
+import BaseWeaponClass from "./Classes/Weapons/base-weapon-class";
 
 // only server scope
 if (GameConfig.server === undefined) throw"";
@@ -42,6 +41,9 @@ function killFeed(attacker: Player, victim: Player): void {
 
 function reward(player: Player): void {
     print(`${player}, got cash and exp`);
+
+    // use reward-service
+
 }
 /*
     ProfileStore reward take and save, upd UI
@@ -53,7 +55,7 @@ function hit(victim: Model, config: Weapon): boolean {
     const humanoid = victim.FindFirstChild("Humanoid") as Humanoid;
 
     const health = math.max(0, humanoid.Health - damage);
-    print(`health, in hit function : ${health}`)
+    print(`health, in hit function : ${health}`);
     humanoid.Health = health;
 
     if ( health <= 0 ) return true;
@@ -104,7 +106,7 @@ function attack(player: Player, tool: Tool | BasePart): void {
 
 // setup
 Players.PlayerAdded.Connect(player => {
-    task.wait(7);
+    task.wait(5);
     print(`give weapon for : ${player.DisplayName}`);
     newWeaponForPlayer(player, GameConfig.BASE_WEAPON);
 })

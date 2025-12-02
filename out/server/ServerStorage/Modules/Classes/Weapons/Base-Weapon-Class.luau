@@ -85,7 +85,6 @@ do
 				RunService.Heartbeat:Wait()
 			end
 		end
-		-- distance = travelTime, i += travelTime / 240
 	end
 	function BaseWeaponClass:attack(player)
 		if RunService:IsServer() == false then
@@ -103,7 +102,6 @@ do
 		local distance = math.max(0, ((_position - _mouseHitPosition).Magnitude + 1))
 		local travelTime = distance / self.bulletSpeed
 		local move = (self.bulletSpeed / 144)
-		print(`loop settings travelTime: {travelTime}, move: {move}`)
 		-- start loop
 		victim = nil
 		fireball:PivotTo(startPosition)
@@ -123,7 +121,6 @@ do
 		if fireball.Parent == Workspace then
 			fireball.Parent = GameConfig.ObjectPoolBullets
 		end
-		print(`loop stoping return values: player: {player.Name}, victim: {victim}`)
 		return { player, victim }
 	end
 end

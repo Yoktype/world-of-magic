@@ -82,5 +82,6 @@ export default {
     getMousePositionOnScreenEvent: MouseEvents.FindFirstChild("GetMousePositionOnScreenEvent") as RemoteFunction,
     getMouseHitInWolrdEvent: MouseEvents.FindFirstChild("GetMouseHitInWolrdEvent") as RemoteFunction,
     getMousePositionInWorldEvent: MouseEvents.FindFirstChild("GetMousePositionInWorldEvent") as RemoteFunction,
+    getCameraRay: MouseEvents.FindFirstChild("GetCameraRayEvent") as RemoteFunction,
     
 }

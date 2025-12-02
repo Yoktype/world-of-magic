@@ -4,5 +4,6 @@ interface Weapon {
     bulletSpeed: number,
     cooldown: number,
     damage: number,
+    range: number,
     attack: (player: Player) => [Player, Model] | [Player, undefined],
 }

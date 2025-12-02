@@ -1,5 +1,5 @@
 import { Players, RunService } from "@rbxts/services";
-import GameConfig from "shared/Modules/Configs/GameConfig";
+import GameConfig from "shared/Modules/Configs/game-config";
 import ProfileStore from "@rbxts/profile-store";
 
 // constants
@@ -64,11 +64,9 @@ function loadDataForPlayer(player: Player): void {
     const leaderstats = player.FindFirstChild("leaderstats") as Folder;
     const cash = leaderstats.FindFirstChild("Cash") as NumberValue;
 
-    function loadData() { // later return true if all good else kick
-        cash.Value = data.Cash;
-    }
-
-    loadData();
+    // setup
+    cash.Value = data.Cash;
+    
     dataUdapter(player);
 }
 

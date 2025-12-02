@@ -1,5 +1,5 @@
-import GameConfig from "shared/Modules/Configs/GameConfig";
-import { getMousePositionOnScreen, getMousePositionInWorld, getMouseHitInWolrd } from "./Utils/Mouse";
+import GameConfig from "shared/Modules/Configs/game-config";
+import { getMousePositionOnScreen, getMousePositionInWorld, getMouseHitInWolrd, getCameraRay } from "./Utils/mouse";
 
 
 // setup
@@ -12,4 +12,7 @@ GameConfig.getMouseHitInWolrdEvent.OnClientInvoke = () => {
 }
 GameConfig.getMousePositionInWorldEvent.OnClientInvoke = () => {
     return getMousePositionInWorld();
+}
+GameConfig.getCameraRay.OnClientInvoke = () => {
+    return getCameraRay();
 }
