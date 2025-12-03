@@ -1,6 +1,6 @@
 import getProfile from "./Player";
 
-export function updateLeaderstats(player: Player) {
+export function updateLeaderstats(player: Player): void {
     const profile = getProfile(player);
     if ( profile === undefined ) {
         player.Kick(`Profile session end - Please rejoin`);
@@ -15,4 +15,11 @@ export function updateLeaderstats(player: Player) {
 
     // setup
     cash.Value = newCashValue;
+}
+
+
+export const inventoryNotification = {
+
+
+        
 }
