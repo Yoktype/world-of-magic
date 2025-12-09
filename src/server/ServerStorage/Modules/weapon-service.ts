@@ -1,11 +1,7 @@
 import { ReplicatedStorage, Players } from "@rbxts/services";
 import GameConfig from "shared/Modules/Configs/Game-Config";
 import BaseWeaponClass from "./Classes/Weapons/Base-Weapon-Class";
-<<<<<<< HEAD
-import { killReward } from "./reward-service";
-=======
 import { killReward } from "./Reward-Service";
->>>>>>> b3d315b (new: react UI: Inventory frame)
 
 // only server scope
 if (GameConfig.server === undefined) throw"";

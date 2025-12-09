@@ -13,37 +13,37 @@ world-of-magic
 
         - flex inf 
             - HttpService.GenerateGUID(false) -> unique id
+
+                Hooks :
+                    useRef -> link on Instanse or bind Instanse on Ref variable
+                    useEffect -> work once when mount
+
+
+
+
+/ / /   todo   / / /
     TODO:
         - fix:
-            - give tool again while player die ()
+            - [BUG] when i compily roblox-ts -> luau
+                - Weapon-Service .attack -> :attack()
+
+
+
+
+
 
         - new:
             - Inventory
-                - UI
-                    - items list
-                        - when mouse focus on item
-                            - Show item property (damage, cooldown)
-                    - Sell mode
-                    - Select mode
-                    - 
+                - UI (client) 
+                    - 2 item lists
+                        - weapons list
+                        - armores list
+                    - select item
+                        - create buttons
+                            - Equip/Unequip, Sell
+                        - tween?
+                    - create new item logic
 
-
-
-
-           
-                        
-
-    Hooks :
-
-	useRef -> link on Instanse or bind Instanse on Ref variable
-	useEffect -> work once when mount 
-
-
-
-
-
-           
-    
 
 
 
@@ -72,8 +72,6 @@ world-of-magic
 
         - ServerStorage
             - Events / folder
-
-
 
 
     ROJO:

@@ -1,5 +1,5 @@
 import GameConfig from "shared/Modules/Configs/Game-Config";
-import { getMousePositionOnScreen, getMousePositionInWorld, getMouseHitInWolrd, getCameraRay } from "./Modules/Utils/mouse";
+import { getMousePositionOnScreen, getMousePositionInWorld, getMouseHitInWolrd, getCameraRay } from "./Modules/Utils/Mouse";
 
 
 // setup
