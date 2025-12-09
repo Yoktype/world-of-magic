@@ -7,7 +7,11 @@ local RunService = _services.RunService
 local Workspace = _services.Workspace
 local WeaponClass = TS.import(script, game:GetService("ServerStorage"), "Modules", "Classes", "Weapon").default
 local BaseWeaponConfig = TS.import(script, game:GetService("ReplicatedStorage"), "Modules", "Configs", "Weapons", "Base-Weapon-Config").default
+<<<<<<< HEAD
 local GameConfig = TS.import(script, game:GetService("ReplicatedStorage"), "Modules", "Configs", "GameConfig").default
+=======
+local GameConfig = TS.import(script, game:GetService("ReplicatedStorage"), "Modules", "Configs", "Game-Config").default
+>>>>>>> b3d315b (new: react UI: Inventory frame)
 local BaseWeaponClass
 do
 	local super = WeaponClass

@@ -8,17 +8,47 @@
 	        - Reward system
 	        - Inventory
 	        - Store
+	        - Armore system
 	        - Level system
+	        - Monetization
 	
 	
+<<<<<<< HEAD
 	    TODO :
 	        - 
+=======
+	        - flex inf 
+	            - HttpService.GenerateGUID(false) -> unique id
+	    TODO:
+	        - fix:
+	            - give tool again while player die ()
+	
+	        - new:
+	            - Inventory / CLASS
+	                - UI
+	                    - button open invenotory move to hotbar
+	                        - create functions for change state
+	
+	
+	
+	                        
+	    Hooks :
+	
+		useRef -> link on Instanse or bind Instanse on Ref variable
+		useEffect -> work once when mount 
+	
+	
+	
+>>>>>>> b3d315b (new: react UI: Inventory frame)
 	
 	
 	
 	    Create :
 	        - ReplicatedStorage
 	            - Events
+	                - NotificationEvents / Folder
+	                - InventoryEvents / Folder
+	                    - 
 	                - WeaponEvents / Folder
 	                    - NewWeapon / RemoteEvent
 	                    - Attack / RemoteEvent
@@ -32,7 +62,17 @@
 	                    - BaseWeapon / tool
 	                    - BaseBullet / BasePart
 	
+<<<<<<< HEAD
 	    ROJO :
+=======
+	        - ServerStorage
+	            - Events / folder
+	
+	
+	
+	
+	    ROJO:
+>>>>>>> b3d315b (new: react UI: Inventory frame)
 	        - ignore
 	            init.meta.json
 	                {

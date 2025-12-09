@@ -30,7 +30,7 @@ if ( isServer === true ) {
 
         // bindable events (in ServerStorage)
         // reward-service
-        killReward: RewardEvents.FindFirstChild("KillRewardEvent") as BindableEvent,
+        // killReward: RewardEvents.FindFirstChild("KillRewardEvent") as BindableEvent,
 
 
         // bindable function (in ServerStorage)

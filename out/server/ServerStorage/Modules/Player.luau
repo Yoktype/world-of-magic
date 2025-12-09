@@ -1,0 +1,83 @@
+-- Compiled with roblox-ts v3.0.0
+local TS = require(game:GetService("ReplicatedStorage"):WaitForChild("rbxts_include"):WaitForChild("RuntimeLib"))
+local Players = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "services").Players
+local GameConfig = TS.import(script, game:GetService("ReplicatedStorage"), "Modules", "Configs", "Game-Config").default
+local ProfileStore = TS.import(script, game:GetService("ReplicatedStorage"), "rbxts_include", "node_modules", "@rbxts", "profile-store", "src")
+-- constants
+local PlayerStore = ProfileStore.New(GameConfig.DATA_NAME, GameConfig.PROFILE_TEMPLATE)
+local Profiles = {}
+-- private functions
+-- profile-store
+-- 3
+local function loadDataForPlayer(player)
+	local _userId = player.UserId
+	local profile = Profiles[_userId]
+	if profile == nil then
+		player:Kick(`Profile load fail - Please rejoin`)
+		return nil
+	end
+	local data = profile.Data
+	local leaderstats = player:FindFirstChild("leaderstats")
+	local cash = leaderstats:FindFirstChild("Cash")
+	-- setup
+	cash.Value = data.Cash
+end
+-- 2
+local function init(player)
+	-- leaderstat
+	local leaderstats = Instance.new("Folder")
+	leaderstats.Name = "leaderstats"
+	local Cash = Instance.new("NumberValue")
+	Cash.Name = "Cash"
+	Cash.Value = 0
+	leaderstats.Parent = player
+	Cash.Parent = leaderstats
+	task.wait(1)
+	loadDataForPlayer(player)
+end
+-- 1
+local function loadProfile(player)
+	local key = `User_` .. tostring(player.UserId)
+	local profile = PlayerStore:StartSessionAsync(key, {
+		Cancel = (function()
+			return player.Parent ~= Players
+		end),
+	})
+	if profile ~= nil then
+		profile:AddUserId(player.UserId)
+		profile:Reconcile()
+		profile.OnSessionEnd:Connect(function()
+			local _userId = player.UserId
+			Profiles[_userId] = nil
+			player:Kick(`Profile session end - Please rejoin`)
+		end)
+		if player.Parent == Players then
+			local _userId = player.UserId
+			Profiles[_userId] = profile
+		else
+			profile:EndSession()
+		end
+	else
+		player:Kick(`Profile load fail - Please rejoin`)
+	end
+	init(player)
+end
+-- export functions
+local function getProfile(player)
+	local _userId = player.UserId
+	return Profiles[_userId]
+end
+-- setup
+Players.PlayerAdded:Connect(function(player)
+	loadProfile(player)
+end)
+Players.PlayerRemoving:Connect(function(player, reason)
+	local _userId = player.UserId
+	local profile = Profiles[_userId]
+	if profile ~= nil then
+		profile:EndSession()
+	end
+end)
+return {
+	default = getProfile,
+}
