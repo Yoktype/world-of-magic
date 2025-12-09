@@ -1,5 +1,5 @@
 import gameConfig from "shared/Modules/Configs/Game-Config";
-import { getProfile } from "../player";
+import getProfile from "../Player";
 
 export class Inventory {
 

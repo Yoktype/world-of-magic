@@ -1,5 +1,5 @@
 import rewardConfig from "shared/Modules/Configs/Reward-Config";
-import getProfile from "./player";
+import getProfile from "./Player";
 import { updateLeaderstats } from "./Notification";
 
 export function killReward(player: Player) {

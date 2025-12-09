@@ -1,4 +1,4 @@
-import getProfile from "./player";
+import getProfile from "./Player";
 
 export function updateLeaderstats(player: Player) {
     const profile = getProfile(player);
