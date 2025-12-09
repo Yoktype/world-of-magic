@@ -30,7 +30,11 @@ if ( isServer === true ) {
 
         // bindable events (in ServerStorage)
         // reward-service
+<<<<<<< HEAD
         // killReward: RewardEvents.FindFirstChild("KillRewardEvent") as BindableEvent,
+=======
+        killReward: RewardEvents.FindFirstChild("KillRewardEvent") as BindableEvent,
+>>>>>>> aac8734 (new: reward-service(save) + notification)
 
 
         // bindable function (in ServerStorage)
@@ -74,7 +78,11 @@ export default {
         Cash: 1000,
 
         inventory: {
+<<<<<<< HEAD
             items: new Map<string, Item>(),
+=======
+            weapons: new Map<string, WeaponItem>(),
+>>>>>>> aac8734 (new: reward-service(save) + notification)
         }
     },
 

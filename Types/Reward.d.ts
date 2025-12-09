@@ -1,0 +1,4 @@
+interface KillReward {
+    cash: number, 
+    
+}

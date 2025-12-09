@@ -1,7 +1,13 @@
 import { ReplicatedStorage, Players } from "@rbxts/services";
+<<<<<<< HEAD
 import GameConfig from "shared/Modules/Configs/Game-Config";
 import BaseWeaponClass from "./Classes/Weapons/Base-Weapon-Class";
 import { killReward } from "./Reward-Service";
+=======
+import GameConfig from "shared/Modules/Configs/game-config";
+import BaseWeaponClass from "./Classes/Weapons/base-weapon-class";
+import { killReward } from "./reward-service";
+>>>>>>> aac8734 (new: reward-service(save) + notification)
 
 // only server scope
 if (GameConfig.server === undefined) throw"";
