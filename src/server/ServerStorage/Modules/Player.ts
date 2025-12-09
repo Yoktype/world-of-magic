@@ -1,0 +1,93 @@
+import { Players, RunService } from "@rbxts/services";
+import GameConfig from "shared/Modules/Configs/Game-Config";
+import ProfileStore from "@rbxts/profile-store";
+
+// constants
+const PlayerStore = ProfileStore.New(GameConfig.DATA_NAME, GameConfig.PROFILE_TEMPLATE);
+const Profiles = new Map<number, ProfileStore.Profile<typeof GameConfig.PROFILE_TEMPLATE>>();
+
+// private functions
+
+// profile-store
+// 3
+function loadDataForPlayer(player: Player): void {
+    const profile = Profiles.get(player.UserId);
+    if ( profile === undefined ) {
+        player.Kick(`Profile load fail - Please rejoin`);
+        return;
+    }
+
+    const data = profile.Data;
+
+    const leaderstats = player.FindFirstChild("leaderstats") as Folder;
+    const cash = leaderstats.FindFirstChild("Cash") as NumberValue;
+
+    // setup
+    cash.Value = data.Cash;
+}
+
+// 2
+function init(player: Player) {
+
+    // leaderstat
+    const leaderstats = new Instance("Folder");
+    leaderstats.Name = "leaderstats";
+
+    const Cash = new Instance("NumberValue");
+    Cash.Name = "Cash";
+    Cash.Value = 0;
+
+    leaderstats.Parent = player;
+    Cash.Parent = leaderstats;
+
+    task.wait(1); // for init all 
+
+    loadDataForPlayer(player);
+}
+
+// 1
+function loadProfile(player: Player): void {
+    const key = `User_` + player.UserId;
+    const profile = PlayerStore.StartSessionAsync(key, {
+        Cancel: (() => {
+            return player.Parent !== Players;
+        })
+    });
+
+    if ( profile !== undefined ) {
+
+        profile.AddUserId(player.UserId); // GDPR
+        profile.Reconcile();
+
+        profile.OnSessionEnd.Connect(() => {
+            Profiles.delete(player.UserId);
+            player.Kick(`Profile session end - Please rejoin`);
+        })
+
+        if ( player.Parent === Players ) {
+            Profiles.set(player.UserId, profile);
+        } else {
+            profile.EndSession();
+        }
+    } else {
+        player.Kick(`Profile load fail - Please rejoin`);
+    }
+
+    init(player);
+}
+
+// export functions
+export default function getProfile(player: Player): ProfileStore.Profile<typeof GameConfig.PROFILE_TEMPLATE> | undefined {
+    return Profiles.get(player.UserId);
+}
+
+// setup
+Players.PlayerAdded.Connect((player: Player): void => {
+    loadProfile(player); // loading ~= 10 second
+})
+Players.PlayerRemoving.Connect((player: Player, reason: Enum.PlayerExitReason): void => {
+    const profile = Profiles.get(player.UserId);
+    if ( profile !== undefined ) {
+        profile.EndSession();
+    }
+})

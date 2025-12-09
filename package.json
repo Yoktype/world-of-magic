@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@rbxts/profile-store": "^1.0.3",
+    "@rbxts/react": "^17.3.7-ts.1",
     "@rbxts/services": "^1.6.0"
   }
 }
