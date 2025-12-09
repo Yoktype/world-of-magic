@@ -26,7 +26,7 @@ world-of-magic
             - Weapon-Service
                 - .attack -> :attack (when compile on luau)
             - screenGui reset per death
-            - delete old commits
+            [X] delete old commits
 
 
             - soon
