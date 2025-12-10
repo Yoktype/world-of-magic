@@ -14,35 +14,55 @@ world-of-magic
         - flex inf 
             - HttpService.GenerateGUID(false) -> unique id
 
-                Hooks :
-                    useRef -> link on Instanse or bind Instanse on Ref variable
-                    useEffect -> work once when mount
+            - react Hooks :
+                - useRef -> link on Instanse or bind Instanse on Ref variable
+                - useEffect -> work once when mount for bind exapmle
 
 
 
 
 / / /   todo   / / /
     TODO:
-        - fix:
-            - [BUG] when i compily roblox-ts -> luau
+        fix:
+            [bug] : 
                 - Weapon-Service .attack -> :attack()
+                - screengui reset per respawn
+
+            [rework] :
+                [X] react companents
 
 
 
+                - 🚀 Weapon-Service [w. derpmonster83 paintball and phantom forces review]
+                - 🚀 Base-Weapon-Class rework logic
 
 
-
-        - new:
+        new:
             - Inventory
-                - UI (client) 
-                    - 2 item lists
-                        - weapons list
-                        - armores list
+                UI (client) :
+                    [X] main frame
+                    [X] open frame button
+                    [X] close frame button
+                    [X] weapon list frame
+
+                    - armore list frame
+                    - open weapon list button
+                    - open armore list button
+                    - item template
+                        - selectable
+                        - focus data (item property)
                     - select item
-                        - create buttons
-                            - Equip/Unequip, Sell
-                        - tween?
-                    - create new item logic
+                        - equip / unequip button
+                        - sell button
+
+                UI network (client) :
+                    - event create new item
+                    - event sell item
+                    - event equip / unequip item
+                    - event update states
+
+            - React structure 
+                - hooks.ts -> all hooks
 
 
 
@@ -50,28 +70,23 @@ world-of-magic
 
 
 
-    Create:
-        - ReplicatedStorage
-            - Events
-                - NotificationEvents / Folder
-                - InventoryEvents / Folder
-                    - 
-                - WeaponEvents / Folder
-                    - NewWeapon / RemoteEvent
-                    - Attack / RemoteEvent
-                - MouseEvents / Folder
-                    - GetMousePositionOnScreenEvent / RemoteFunction
-                    - GetMouseHitInWolrdEvent / RemoteFunction
-                    - GetMousePositionInWorldEvent / RemoteFunction
-                    - GetCameraRayEvent / RemoteFunction 
 
-            - Assets / folder
-                - Weapons / folder
-                    - BaseWeapon / tool
-                    - BaseBullet / BasePart
 
-        - ServerStorage
-            - Events / folder
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     ROJO:
