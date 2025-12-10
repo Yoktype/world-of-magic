@@ -1,6 +1,6 @@
 // shared config
 
-import GameConfig from "../Game-Config";
+import GameConfig from "../GameConfig";
 
 // constants
 const baseWeapon = GameConfig.Weapons.FindFirstChild(GameConfig.BASE_WEAPON) as Tool;

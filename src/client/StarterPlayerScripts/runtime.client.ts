@@ -1,5 +1,5 @@
 import { Players } from "@rbxts/services";
-import init from "shared/Modules/Utils/Initialize";
+import initialize from "shared/Modules/Utils/Initialize";
 
 // constants
 const LOCAL_PLAYER = Players.LocalPlayer as Player;
@@ -13,5 +13,5 @@ const Modules = playerScripts.FindFirstChild("Modules") as Folder;
 const Components = Modules.FindFirstChild("Components") as Folder;
 
 // setup
-init(Modules);
-init(Components);
+initialize(Modules);
+initialize(Components);

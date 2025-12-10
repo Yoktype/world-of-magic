@@ -2,8 +2,8 @@
 
 import { Players, RunService, Workspace } from "@rbxts/services";
 import WeaponClass from "../Weapon";
-import BaseWeaponConfig from "shared/Modules/Configs/Weapons/Base-Weapon-Config";
-import GameConfig from "shared/Modules/Configs/Game-Config";
+import BaseWeaponConfig from "shared/Modules/Configs/Weapons/BaseWeaponConfig";
+import GameConfig from "shared/Modules/Configs/GameConfig";
 
 interface PlayerSetup {
     endPosition: Vector3,
@@ -11,7 +11,7 @@ interface PlayerSetup {
     humanoidRootPart: BasePart
 }
 
-class BaseWeaponClass extends WeaponClass {
+class BaseWeapon extends WeaponClass {
 
     private getRender(): BasePart {
         const bulletModel = GameConfig.ObjectPoolBullets.FindFirstChild(this.bullet.Name) as BasePart;
@@ -66,7 +66,7 @@ class BaseWeaponClass extends WeaponClass {
         return startPosition;
     }
 
-    private move(
+    private runMovement(
         bullet: BasePart,
         bulletPostion: Vector3,
         distance: number,
@@ -114,7 +114,7 @@ class BaseWeaponClass extends WeaponClass {
             victim = character;
         })
 
-        this.move(
+        this.runMovement(
             fireball,
             fireball.Position,
             distance,
@@ -130,7 +130,7 @@ class BaseWeaponClass extends WeaponClass {
 
 export default {
 
-    weapon: new BaseWeaponClass(
+    weapon: new BaseWeapon(
         BaseWeaponConfig.model,
         BaseWeaponConfig.bullet,
         BaseWeaponConfig.bulletSpeed,

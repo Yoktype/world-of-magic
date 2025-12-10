@@ -1,7 +1,7 @@
 import { ReplicatedStorage, Players } from "@rbxts/services";
-import GameConfig from "shared/Modules/Configs/Game-Config";
-import BaseWeaponClass from "./Classes/Weapons/Base-Weapon-Class";
-import { killReward } from "./Reward-Service";
+import GameConfig from "shared/Modules/Configs/GameConfig";
+import BaseWeaponClass from "./Classes/Weapons/BaseWeapon";
+import { onKillReward } from "./RewardService";
 
 // only server scope
 if (GameConfig.server === undefined) throw"";
@@ -11,8 +11,7 @@ const WeaponsConfigs = new Map<string, Weapon>();
 WeaponsConfigs.set(GameConfig.BASE_WEAPON, BaseWeaponClass.weapon);
 
 // private functions
-// activated this function from ProfileStore only by bindable
-function newWeaponForPlayer(player: Player, WeaponName: string): void {
+function giveWeapon(player: Player, WeaponName: string): void {
     if (GameConfig.server === undefined) throw""; // yandere code
 
 
@@ -33,21 +32,21 @@ function getWeaponState(tool: Tool | BasePart): string {
     return tool.GetAttribute(GameConfig.WEAPON_STATE) as string ?? GameConfig.BASE_WEAPON as string;
 }
 
-function killFeed(attacker: Player, victim: Player | undefined): void {
+function useKillFeed(attacker: Player, victim: Player | undefined): void {
     print(`${attacker}, killed ${victim}`);
 }
 /* TODO
     killfeed UI
 */
 
-function reward(player: Player): void {
-    killReward(player);
+function setReward(player: Player): void {
+    onKillReward(player);
 }
 /*
     ProfileStore reward take and save, upd UI
 */
 
-function hit(victim: Model, config: Weapon): boolean {
+function isHit(victim: Model, config: Weapon): boolean {
     const damage = config.damage;
 
     const humanoid = victim.FindFirstChild("Humanoid") as Humanoid;
@@ -82,7 +81,7 @@ function isCooldown(tool: Tool | BasePart): boolean {
     return true;
 }
 
-function attack(player: Player, tool: Tool | BasePart): void {
+function onAttack(player: Player, tool: Tool | BasePart): void {
     const weaponState = getWeaponState(tool) as string;
     const weaponConfig = WeaponsConfigs.get(weaponState) as Weapon;
 
@@ -91,13 +90,13 @@ function attack(player: Player, tool: Tool | BasePart): void {
 
     const [attacker, victim] = weaponConfig.attack(player);
     if ( victim === undefined ) return;
-    const isKill = hit(victim, weaponConfig);
+    const isKill = isHit(victim, weaponConfig);
     
     const playerVictim = Players.GetPlayerFromCharacter(victim);
     
     if ( isKill === true ) {
-        reward(attacker);
-        killFeed(attacker, playerVictim);
+        setReward(attacker);
+        useKillFeed(attacker, playerVictim);
     }
 }
 
@@ -105,7 +104,7 @@ function attack(player: Player, tool: Tool | BasePart): void {
 Players.PlayerAdded.Connect(player => {
     task.wait(5);
     print(`give weapon for : ${player.DisplayName}`);
-    newWeaponForPlayer(player, GameConfig.BASE_WEAPON);
+    giveWeapon(player, GameConfig.BASE_WEAPON);
 })
 
 GameConfig.attackEvent.OnServerEvent.Connect((player: Player, args) => {
@@ -113,5 +112,5 @@ GameConfig.attackEvent.OnServerEvent.Connect((player: Player, args) => {
 
     const tool = args as Tool;
 
-    attack(player, tool);
+    onAttack(player, tool);
 })

@@ -1,22 +1,22 @@
-import GameConfig from "shared/Modules/Configs/Game-Config";
-import BaseWeaponConfig from "shared/Modules/Configs/Weapons/Base-Weapon-Config";
+import GameConfig from "shared/Modules/Configs/GameConfig";
+import BaseWeaponConfig from "shared/Modules/Configs/Weapons/BaseWeaponConfig";
 
 // private functions
-function unequipAnimationPlay(): void {
+function useUnequipAnimation(): void {
 
     return undefined;
 }
 
-function equipAnimationPlay(): void {
+function useEquipAnimation(): void {
 
     return undefined;
 }
 
-function newWeapon(tool: Tool) {
+function loadWeapon(tool: Tool) {
     if (tool === undefined) return;
 
-    tool.Equipped.Connect(() => { equipAnimationPlay(); });
-    tool.Unequipped.Connect(() => { unequipAnimationPlay(); });
+    tool.Equipped.Connect(() => { useEquipAnimation(); });
+    tool.Unequipped.Connect(() => { useUnequipAnimation(); });
     tool.Activated.Connect(() => { GameConfig.attackEvent.FireServer(tool); });
 }
 
@@ -27,5 +27,5 @@ GameConfig.newWeaponEvent.OnClientEvent.Connect((args: Tool) => {
     const tool = args as Tool;
     if ( tool.IsA("Tool") === false ) return; // only tool
 
-    newWeapon(tool);
+    loadWeapon(tool);
 });

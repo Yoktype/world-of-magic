@@ -30,39 +30,22 @@ world-of-magic
 
             [rework] :
                 [X] react companents
+                
+                - names, all name -> onStart, onAttack, getPosition [ get, on, use ]
 
-
-
-                - 🚀 Weapon-Service [w. derpmonster83 paintball and phantom forces review]
-                - 🚀 Base-Weapon-Class rework logic
-
-
+                - Weapon-Service [w. derpmonster83 paintball and phantom forces review]
+                - Base-Weapon-Class rework logic
+                
+                
         new:
-            - Inventory
-                UI (client) :
-                    [X] main frame
-                    [X] open frame button
-                    [X] close frame button
-                    [X] weapon list frame
-
-                    - armore list frame
-                    - open weapon list button
-                    - open armore list button
-                    - item template
-                        - selectable
-                        - focus data (item property)
-                    - select item
-                        - equip / unequip button
-                        - sell button
-
-                UI network (client) :
-                    - event create new item
-                    - event sell item
-                    - event equip / unequip item
-                    - event update states
-
             - React structure 
                 - hooks.ts -> all hooks
+
+            - Inventory
+                UI (client) :
+                    - rework
+
+
 
 
 

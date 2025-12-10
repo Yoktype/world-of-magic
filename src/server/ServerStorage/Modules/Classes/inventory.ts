@@ -1,4 +1,4 @@
-import gameConfig from "shared/Modules/Configs/Game-Config";
+import gameConfig from "shared/Modules/Configs/GameConfig";
 import getProfile from "../Player";
 import { HttpService } from "@rbxts/services";
 
@@ -10,7 +10,7 @@ export class Inventory {
             
     }
 
-    public setup( player: Player ) {
+    public onStart( player: Player ) {
         
 
         // networking | notification
@@ -24,7 +24,7 @@ export class Inventory {
 
     } // remote init
     
-    public newItem( player: Player, weaponType: string | number ) { // number for load data?
+    public createItem( player: Player, weaponType: string | number ) { // number for load data?
         const profile = getProfile(player);
         if ( profile === undefined ) {
             player.Kick(`Profile session end - Please rejoin`);
@@ -38,31 +38,20 @@ export class Inventory {
             uid: 1, // get from configs
         }
 
-        profile.Data.inventory.items.set( uuid, itemValue )
+        profile.Data.inventory.weapons.set( uuid, itemValue )
 
         // notification / or fire ( update UI in client )
 
     }
     
-    private deletItem( player: Player, uuid: string ) {
+    private deleteItem( player: Player, uuid: string ) {
         const profile = getProfile(player);
         if ( profile === undefined ) {
             player.Kick(`Profile session end - Please rejoin`);
             return;
         }
 
-        profile.Data.inventory.items.delete( uuid )
-
-    }
-
-    private updateInventory( player: Player ) {
-        const profile = getProfile(player);
-        if ( profile === undefined ) {
-            player.Kick(`Profile session end - Please rejoin`);
-            return;
-        }
-        
-
+        profile.Data.inventory.weapons.delete( uuid )
 
     }
 
@@ -74,7 +63,7 @@ export class Inventory {
         }
 
         const allItems: { uuid: string, equipped: boolean }[] = [];
-        const inventory = profile.Data.inventory.items // delete :P
+        const inventory = profile.Data.inventory.weapons // delete :P
 
         // forEach + push / or forEach + props.equipped === true + push
 
@@ -91,7 +80,7 @@ export class Inventory {
             return;
         }
 
-        const item = profile.Data.inventory.items.get( uuid );
+        const item = profile.Data.inventory.weapons.get( uuid );
         if ( item === undefined ) return;
 
         item.equipped = true;
@@ -107,7 +96,7 @@ export class Inventory {
             return;
         }
 
-        const item = profile.Data.inventory.items.get( uuid );
+        const item = profile.Data.inventory.weapons.get( uuid );
         if ( item === undefined ) return;
 
         item.equipped = false;

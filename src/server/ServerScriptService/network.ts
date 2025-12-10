@@ -1,4 +1,4 @@
-import GameConfig from "shared/Modules/Configs/Game-Config";
+import GameConfig from "shared/Modules/Configs/GameConfig";
 
 
 // ProfielStore

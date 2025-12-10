@@ -1,8 +1,8 @@
-import rewardConfig from "shared/Modules/Configs/Reward-Config";
+import rewardConfig from "shared/Modules/Configs/RewardConfig";
 import getProfile from "./Player";
-import { updateLeaderstats } from "./Notification";
+import { setLeaderstatValues } from "./Notification";
 
-export function killReward(player: Player) {
+export function onKillReward(player: Player) {
     const profile = getProfile(player);
     if ( profile === undefined ) {
         player.Kick(`Profile session end - Please rejoin`);
@@ -14,5 +14,5 @@ export function killReward(player: Player) {
     const newCashValue = profile.Data.Cash + reward.cash;
     profile.Data.Cash = newCashValue;
 
-    updateLeaderstats(player);
+    setLeaderstatValues(player);
 }

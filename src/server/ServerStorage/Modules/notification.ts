@@ -1,6 +1,6 @@
 import getProfile from "./Player";
 
-export function updateLeaderstats(player: Player): void {
+export function setLeaderstatValues(player: Player): void {
     const profile = getProfile(player);
     if ( profile === undefined ) {
         player.Kick(`Profile session end - Please rejoin`);

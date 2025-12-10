@@ -1,5 +1,5 @@
 import { Players, RunService } from "@rbxts/services";
-import GameConfig from "shared/Modules/Configs/Game-Config";
+import GameConfig from "shared/Modules/Configs/GameConfig";
 import ProfileStore from "@rbxts/profile-store";
 
 // constants
@@ -10,7 +10,7 @@ const Profiles = new Map<number, ProfileStore.Profile<typeof GameConfig.PROFILE_
 
 // profile-store
 // 3
-function loadDataForPlayer(player: Player): void {
+function loadProfile(player: Player): void {
     const profile = Profiles.get(player.UserId);
     if ( profile === undefined ) {
         player.Kick(`Profile load fail - Please rejoin`);
@@ -27,7 +27,7 @@ function loadDataForPlayer(player: Player): void {
 }
 
 // 2
-function init(player: Player) {
+function useLoader(player: Player) {
 
     // leaderstat
     const leaderstats = new Instance("Folder");
@@ -42,11 +42,11 @@ function init(player: Player) {
 
     task.wait(1); // for init all 
 
-    loadDataForPlayer(player);
+    loadProfile(player);
 }
 
 // 1
-function loadProfile(player: Player): void {
+function onPlayerAdded(player: Player): void {
     const key = `User_` + player.UserId;
     const profile = PlayerStore.StartSessionAsync(key, {
         Cancel: (() => {
@@ -73,7 +73,7 @@ function loadProfile(player: Player): void {
         player.Kick(`Profile load fail - Please rejoin`);
     }
 
-    init(player);
+    useLoader(player);
 }
 
 // export functions
@@ -82,9 +82,7 @@ export default function getProfile(player: Player): ProfileStore.Profile<typeof 
 }
 
 // setup
-Players.PlayerAdded.Connect((player: Player): void => {
-    loadProfile(player); // loading ~= 10 second
-})
+Players.PlayerAdded.Connect((player: Player): void => onPlayerAdded(player))
 Players.PlayerRemoving.Connect((player: Player, reason: Enum.PlayerExitReason): void => {
     const profile = Profiles.get(player.UserId);
     if ( profile !== undefined ) {

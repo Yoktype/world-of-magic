@@ -1,4 +1,4 @@
-export default function init(folder: Folder) {
+export default function initialize(folder: Folder) {
     if ( folder === undefined || folder.IsA("Folder") === false ) return;
     const Table = folder.GetChildren();
     for (const v of Table) {
